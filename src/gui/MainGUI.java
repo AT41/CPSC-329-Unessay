@@ -1,5 +1,6 @@
 package gui;
 
+import gui.Main.AttackStatus;
 import gui.Main.AttackType;
 
 public interface MainGUI {
@@ -8,12 +9,18 @@ public interface MainGUI {
 	 * @param attackType
 	 * @param text
 	 */
-	public void setStatusFor(AttackType attackType, String text);
+	public void setStatusFor(AttackType type, AttackStatus status);
+	
+	/**
+	 * Prints to console in center
+	 * @param text
+	 */
+	public void printToGUIConsole(String text);
 	
 	/**
 	 * Sets number of tries for the attack type
 	 * @param attackType
 	 * @param tries
 	 */
-	public void setTriesFor(AttackType attackType, int tries);
+	//public void setTriesFor(AttackType type, int tries);
 }
