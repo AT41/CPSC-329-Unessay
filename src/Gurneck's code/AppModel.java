@@ -84,6 +84,7 @@ public class AppModel {
 	public String getHashedPassword() {
 		return this.hashedPassword;
 	}
+	
 	public void setHashedPassword(String plainTextPass) {
 		this.hashedPassword = hashPassword(plainTextPass);
 	}
@@ -96,6 +97,16 @@ public class AppModel {
 	public String hashPassword(String password) {
 		// TODO implement hashing algorithm
 		return "";
+	}
+	
+	public void runAlgorithms() {
+		
+		// step 2: run algorithm 1
+		this.bfAttack.calculateMetrics();
+		
+		// step 3: update view with results from algorithm 1
+		this.bfAttack.updateMetrics();
+		
 	}
 	
 }

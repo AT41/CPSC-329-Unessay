@@ -24,29 +24,17 @@ public class AppController {
 		//this.view.setMethodForButtonListenerInView(new RunButtonListener());
 	}
 	
-	/**
-	 * Should we implement this closer to view rather than controller?!?! 
-	 * find out next week on dragonballz
-	 * @author Gurneck
-	 *
-	 */
 	class RunButtonListener implements ActionListener{
 
 		@Override
 		public void actionPerformed(ActionEvent e) {
 			// TODO implement sequence of operations
 			
-			// step 1: hash user's password and store it in the model.
+			// step 1: hash the user's password
 			model.setHashedPassword(view.getPlainTextPassword());
 			
-			// step 2: run algorithm 1
-			model.bfAttack.calculateMetrics();
-			
-			// step 3: update view with results from algorithm 1
-			model.bfAttack.updateMetrics();
-			
-			// step 4: run other algorithms
-					
+			// step 2: run algorithms
+			model.runAlgorithms();		
 		}
 	}
 	
