@@ -22,13 +22,13 @@ import javax.swing.JTextField;
 //A GUI program is written as a subclass of Frame - the top-level container
 //This subclass inherits all properties from Frame, e.g., title, icon, buttons, content-pane
 public class Main extends Frame implements MainGUI {
-	class RightContainer {
+	class RightPanel {
 		public JLabel[] outcomes;
-		public Container container;
+		public JPanel panel;
 		
-		public RightContainer(Container container, JLabel[] allLabels) {
+		public RightPanel(JPanel panel, JLabel[] allLabels) {
 			this.outcomes = allLabels;
-			this.container = container;
+			this.panel = panel;
 		}
 		
 		public void changeLabelStatus(int labelIndex, AttackStatus status) {
@@ -37,11 +37,11 @@ public class Main extends Frame implements MainGUI {
 	}
 	class LeftPanel {
 		public JLabel[] allLabels;
-		public Container container;
+		public JPanel panel;
 		
-		public LeftPanel(Container container, JLabel[] allLabels) {
+		public LeftPanel(JPanel panel, JLabel[] allLabels) {
 			this.allLabels = allLabels;
-			this.container = container;
+			this.panel = panel;
 		}
 	}
 	class Console {
@@ -56,6 +56,8 @@ public class Main extends Frame implements MainGUI {
 		}
 	}
 
+	public static final Color BORDER_COLOR = Color.black;
+	
 	public static enum AttackType {
 		BRUTE_FORCE,
 		COMMON_PASSWORDS,
@@ -70,7 +72,7 @@ public class Main extends Frame implements MainGUI {
 	private static final String[] ATTACK_NAMES = {"Brute Force Attack", "Common Passwords Attack", "Rainbow Table Attack", "Dictionary Attack"};
 	private static final int[] WIDTH_HEIGHT = {700, 500};
 
-	private RightContainer rightContainer;
+	private RightPanel rightContainer;
 	private LeftPanel leftContainer;
 	private Console console;
 	
@@ -98,9 +100,9 @@ public class Main extends Frame implements MainGUI {
 		setSize(WIDTH_HEIGHT[0], WIDTH_HEIGHT[1]);
 		
 		this.leftContainer = createLeftSide();
-		this.add(this.leftContainer.container, BorderLayout.WEST);
+		this.add(this.leftContainer.panel, BorderLayout.WEST);
 		this.rightContainer = createRightSide();
-		this.add(rightContainer.container, BorderLayout.EAST);
+		this.add(rightContainer.panel, BorderLayout.EAST);
 		
 		Container userContainer = createUserInputPage();
 		this.add(userContainer, BorderLayout.CENTER);
@@ -108,10 +110,11 @@ public class Main extends Frame implements MainGUI {
 		setVisible(true);
 	}
 	
-	private Container createUserInputPage() {
-		Container userInput = new Container();
+	private JPanel createUserInputPage() {
+		JPanel userInput = new JPanel();
 		userInput.setLayout(new BoxLayout(userInput, BoxLayout.PAGE_AXIS));
 		userInput.setVisible(true);
+		userInput.setBorder(BorderFactory.createEmptyBorder(0, 8, 0, 8));
 		
 		JLabel passwordLabel = new JLabel("Enter Password");
 		passwordLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
@@ -129,7 +132,7 @@ public class Main extends Frame implements MainGUI {
 		userInput.add(calculate);
 		
 		JTextArea console = new JTextArea();
-		console.setBorder(BorderFactory.createLineBorder(Color.black));
+		console.setBorder(BorderFactory.createLineBorder(Main.BORDER_COLOR));
 		console.setEditable(false);
 		console.setVisible(true);
 		userInput.add(console);
@@ -142,23 +145,23 @@ public class Main extends Frame implements MainGUI {
 		JPanel leftPanel = new JPanel();
 		leftPanel.setLayout(new GridLayout(Main.ATTACK_NAMES.length, 1));
 		leftPanel.setVisible(true);
-		leftPanel.setBorder(BorderFactory.createEmptyBorder(0, 0, 0, 8));
-		leftPanel.setBackground(Color.white);
+		leftPanel.setBorder(BorderFactory.createLineBorder(Main.BORDER_COLOR));
 		
 		JLabel[] allLabels = new JLabel[Main.ATTACK_NAMES.length];
 		for (int i = 0; i < Main.ATTACK_NAMES.length; i++) {
 			allLabels[i] = new JLabel(Main.ATTACK_NAMES[i]);
 			allLabels[i].setHorizontalAlignment(JLabel.CENTER);
-			allLabels[i].setBorder(BorderFactory.createMatteBorder(1, 1, i == (Main.ATTACK_NAMES.length-1)? 1 : 0, 1, Color.black));
+			allLabels[i].setBorder(BorderFactory.createMatteBorder(0, 0, i == (Main.ATTACK_NAMES.length-1)? 0 : 1, 0, Main.BORDER_COLOR));
 			leftPanel.add(allLabels[i]);
 		}
 		
 		return new LeftPanel(leftPanel, allLabels);
 	}
 	
-	private RightContainer createRightSide() {
-		Container rightContainer = new Container();
-		rightContainer.setLayout(new BoxLayout(rightContainer, BoxLayout.PAGE_AXIS));
+	private RightPanel createRightSide() {
+		JPanel rightPanel = new JPanel();
+		rightPanel.setLayout(new BoxLayout(rightPanel, BoxLayout.PAGE_AXIS));
+		rightPanel.setBorder(BorderFactory.createLineBorder(Main.BORDER_COLOR));
 		
 		JLabel[] attackLabels = new JLabel[Main.ATTACK_NAMES.length];
 		JLabel[] outcomeLabels = new JLabel[Main.ATTACK_NAMES.length];
@@ -171,10 +174,10 @@ public class Main extends Frame implements MainGUI {
 			temp.setLayout(new FlowLayout());
 			temp.add(attackLabels[i]);
 			temp.add(outcomeLabels[i]);
-			rightContainer.add(temp);
+			rightPanel.add(temp);
 		}
 		
-		return new RightContainer(rightContainer, outcomeLabels);
+		return new RightPanel(rightPanel, outcomeLabels);
 	}
 	
 	public static void main(String[] args) {
