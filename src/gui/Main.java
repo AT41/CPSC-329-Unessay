@@ -95,17 +95,23 @@ public class Main extends Frame implements MainGUI {
 	}
 	
 	private void initialize() {
-		setLayout(new BorderLayout());
 		setTitle("Password Strength Calculator");
 		setSize(WIDTH_HEIGHT[0], WIDTH_HEIGHT[1]);
 		
-		this.leftContainer = createLeftSide();
-		this.add(this.leftContainer.panel, BorderLayout.WEST);
-		this.rightContainer = createRightSide();
-		this.add(rightContainer.panel, BorderLayout.EAST);
+		JPanel mainPanel = new JPanel();
+		int mainPanelPadding = 4;
+		mainPanel.setLayout(new BorderLayout());
+		mainPanel.setBorder(BorderFactory.createEmptyBorder(mainPanelPadding, mainPanelPadding, mainPanelPadding, mainPanelPadding));
+		mainPanel.setVisible(true);
+		add(mainPanel);
 		
-		Container userContainer = createUserInputPage();
-		this.add(userContainer, BorderLayout.CENTER);
+		this.leftContainer = createLeftSide();
+		mainPanel.add(this.leftContainer.panel, BorderLayout.WEST);
+		this.rightContainer = createRightSide();
+		mainPanel.add(rightContainer.panel, BorderLayout.EAST);
+		
+		JPanel userInputPanel = createUserInputPage();
+		mainPanel.add(userInputPanel, BorderLayout.CENTER);
 
 		setVisible(true);
 	}
@@ -160,22 +166,28 @@ public class Main extends Frame implements MainGUI {
 	
 	private RightPanel createRightSide() {
 		JPanel rightPanel = new JPanel();
-		rightPanel.setLayout(new BoxLayout(rightPanel, BoxLayout.PAGE_AXIS));
+		rightPanel.setLayout(new BorderLayout()/*new BoxLayout(rightPanel, BoxLayout.PAGE_AXIS)*/);
 		rightPanel.setBorder(BorderFactory.createLineBorder(Main.BORDER_COLOR));
+		
+		JLabel title = new JLabel("Statistics");
+		title.setHorizontalAlignment(JLabel.CENTER);
+		title.setBorder(BorderFactory.createCompoundBorder(BorderFactory.createMatteBorder(0, 0, 1, 0, Main.BORDER_COLOR), BorderFactory.createEmptyBorder(8, 0, 20, 0)));
+		rightPanel.add(title, BorderLayout.NORTH);
 		
 		JLabel[] attackLabels = new JLabel[Main.ATTACK_NAMES.length];
 		JLabel[] outcomeLabels = new JLabel[Main.ATTACK_NAMES.length];
+		
+		Container temp = new Container();
+		temp.setVisible(true);
+		temp.setLayout(new BoxLayout(temp, BoxLayout.PAGE_AXIS));
 		for (int i = 0; i < Main.ATTACK_NAMES.length; i++) {
 			attackLabels[i] = new JLabel(Main.ATTACK_NAMES[i]);
 			outcomeLabels[i] = new JLabel();
 			
-			Container temp = new Container();
-			temp.setVisible(true);
-			temp.setLayout(new FlowLayout());
 			temp.add(attackLabels[i]);
 			temp.add(outcomeLabels[i]);
-			rightPanel.add(temp);
 		}
+		rightPanel.add(temp, BorderLayout.CENTER);
 		
 		return new RightPanel(rightPanel, outcomeLabels);
 	}
