@@ -1,9 +1,19 @@
 package gui;
 
+import java.awt.event.ActionListener;
+
 import gui.Main.AttackStatus;
 import gui.Main.AttackType;
 
 public interface MainGUI {
+	public void setButtonEnableOrDisable(boolean shouldEnable);
+	
+	/**
+	 * The ActionEvent will return a reference to the JTextField which contains the password
+	 * @param returnsPlaintextPassword
+	 */
+	public void addListenerForButton(ActionListener returnsPlaintextPassword);
+	
 	/**
 	 * Sets the status displayed on the rightmost side for the given attack type
 	 * @param attackType

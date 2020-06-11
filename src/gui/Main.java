@@ -9,6 +9,8 @@ import java.awt.FlowLayout;
 import java.awt.Frame;  // Using Frame class in package java.awt
 import java.awt.GridLayout;
 import java.awt.Label;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 
@@ -22,42 +24,7 @@ import javax.swing.JTextField;
 //A GUI program is written as a subclass of Frame - the top-level container
 //This subclass inherits all properties from Frame, e.g., title, icon, buttons, content-pane
 public class Main extends Frame implements MainGUI {
-	class RightPanel {
-		public JLabel[] outcomes;
-		public JPanel panel;
-		
-		public RightPanel(JPanel panel, JLabel[] allLabels) {
-			this.outcomes = allLabels;
-			this.panel = panel;
-		}
-		
-		public void changeLabelStatus(int labelIndex, AttackStatus status) {
-			outcomes[labelIndex].setText(status == AttackStatus.IMPOSSIBLE ? "NO" : "YES");
-		}
-	}
-	class LeftPanel {
-		public JLabel[] allLabels;
-		public JPanel panel;
-		
-		public LeftPanel(JPanel panel, JLabel[] allLabels) {
-			this.allLabels = allLabels;
-			this.panel = panel;
-		}
-	}
-	class Console {
-		public JTextArea consoleText;
-		
-		public Console(JTextArea consoleText) {
-			this.consoleText = consoleText;
-		}
-		
-		public void printToConsole(String text) {
-			this.consoleText.setText(this.consoleText.getText() + "\n" + text);
-		}
-	}
-
 	public static final Color BORDER_COLOR = Color.black;
-	
 	public static enum AttackType {
 		BRUTE_FORCE,
 		COMMON_PASSWORDS,
@@ -68,20 +35,31 @@ public class Main extends Frame implements MainGUI {
 		IMPOSSIBLE,
 		POSSIBLE
 	}
-	
 	private static final String[] ATTACK_NAMES = {"Brute Force Attack", "Common Passwords Attack", "Rainbow Table Attack", "Dictionary Attack"};
 	private static final int[] WIDTH_HEIGHT = {700, 500};
 
 	private RightPanel rightContainer;
 	private LeftPanel leftContainer;
-	private Console console;
-	
+	private UserPanelComponents userPanelComponents;
+
+
+	@Override
+	public void addListenerForButton(ActionListener returnsPlaintextPassword) {
+		this.userPanelComponents.calculateButton.addActionListener(e -> {
+			returnsPlaintextPassword.actionPerformed(new ActionEvent(this.userPanelComponents.passwordInput, 0, ""));
+		});
+	}
+	@Override
 	public void setStatusFor(AttackType type, AttackStatus status) {
 		this.rightContainer.changeLabelStatus(type.ordinal(), status);
 	}
-	
+	@Override
 	public void printToGUIConsole(String text) {
-		this.console.printToConsole(text);
+		this.userPanelComponents.console.printToConsole(text);
+	}
+	@Override
+	public void setButtonEnableOrDisable(boolean shouldEnable) {
+		this.userPanelComponents.calculateButton.setEnabled(shouldEnable);
 	}
 	
 	public Main() {
@@ -129,20 +107,20 @@ public class Main extends Frame implements MainGUI {
 		passwordInput.setMaximumSize(
 				new Dimension(200, passwordInput.getPreferredSize().height)
 		);
-		JButton calculate = new JButton("Calculate Strength");
-		calculate.setDoubleBuffered(true); // Prevents button from flickering
-		calculate.setAlignmentX(Component.CENTER_ALIGNMENT);
+		JButton calculateButton = new JButton("Calculate Strength");
+		calculateButton.setDoubleBuffered(true); // Prevents button from flickering
+		calculateButton.setAlignmentX(Component.CENTER_ALIGNMENT);
 		
 		userInput.add(passwordLabel);
 		userInput.add(passwordInput);
-		userInput.add(calculate);
+		userInput.add(calculateButton);
 		
 		JTextArea console = new JTextArea();
 		console.setBorder(BorderFactory.createLineBorder(Main.BORDER_COLOR));
 		console.setEditable(false);
 		console.setVisible(true);
 		userInput.add(console);
-		this.console = new Console(console);
+		this.userPanelComponents = new UserPanelComponents(passwordInput, calculateButton, console);
 		
 		return userInput;
 	}
@@ -166,7 +144,7 @@ public class Main extends Frame implements MainGUI {
 	
 	private RightPanel createRightSide() {
 		JPanel rightPanel = new JPanel();
-		rightPanel.setLayout(new BorderLayout()/*new BoxLayout(rightPanel, BoxLayout.PAGE_AXIS)*/);
+		rightPanel.setLayout(new BorderLayout());
 		rightPanel.setBorder(BorderFactory.createLineBorder(Main.BORDER_COLOR));
 		
 		JLabel title = new JLabel("Statistics");
@@ -190,10 +168,6 @@ public class Main extends Frame implements MainGUI {
 		rightPanel.add(temp, BorderLayout.CENTER);
 		
 		return new RightPanel(rightPanel, outcomeLabels);
-	}
-	
-	public static void main(String[] args) {
-	   new Main();
 	}
 	
 	// This is code proving that we don't need to relinquish control of the main thread to update the display
