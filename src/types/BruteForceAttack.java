@@ -1,3 +1,4 @@
+package types;
 
 public class BruteForceAttack extends AttackAPI{
 
