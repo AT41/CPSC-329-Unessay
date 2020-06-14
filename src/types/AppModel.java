@@ -48,20 +48,28 @@ public class AppModel {
 		return "";
 	}
 	
-	public void runAlgorithms() {
-		
-		this.bfAttack = new BruteForceAttack(hashedPassword, plainTextPassword);
+	public void runAlgorithms() {	
+		this.bfAttack = new BruteForceAttack(plainTextPassword);
 		this.bfAttack.run();
 		finishedAttackEvent(AttackType.BRUTE_FORCE,this.bfAttack.attackSuccess ? AttackStatus.POSSIBLE : AttackStatus.IMPOSSIBLE);
-		
-		
-		
+		callUpdateConsole(this.bfAttack.estimatedGuesses);
+		/*
+		this.cpAttack = new CommonPasswordAttack();
+		this.cpAttack.run();
+		finishedAttackEvent(AttackType.COMMON_PASSWORDS, this.cpAttack.attackSuccess ? AttackStatus.POSSIBLE : AttackStatus.IMPOSSIBLE);
+		*/
 		
 	}
 	
 	public void finishedAttackEvent(AttackType type, AttackStatus status) {
 		for(AttackListener al : this.controllerListener) {
 			al.attackComplete(type, status);
+		}
+	}
+	
+	public void callUpdateConsole(int estimatedGuesses) {
+		for(AttackListener al : this.controllerListener) {
+			al.updateConsole(Integer.toString(estimatedGuesses));
 		}
 	}
 	

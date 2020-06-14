@@ -3,11 +3,14 @@ package types;
 public abstract class AttackAPI {
 
 	
-	int cycleMAX; // set a reasonable cycle limit on your algorithm
+	final static int cycleMAX = 10000; // set a reasonable cycle limit on your algorithm
 	
-	String hashedPassword;	// user's hashed password
-	String plainTextPassword; // user's plain text password
-	boolean attackSuccess;
+	//String hashedPassword;	// user's hashed password
+	//String plainTextPassword; // user's plain text password
+	
+	String password; 	// hashed or plain text depending on algorithm
+	
+	boolean attackSuccess;  // set this to true if cycleCounter < cycleMax 
 	int cycleCounter;
 	int estimatedGuesses;
 	
@@ -15,29 +18,25 @@ public abstract class AttackAPI {
 	
 	
 	public void run() {
-		this.cycleCounter = algorithm();
-		if(cycleCounter < cycleMAX) {
-			this.attackSuccess = true;
-		}
+		//algorithm();
 		this.estimatedGuesses = returnMetrics();
 	}
 	
 	
 	
 	/** This method is where you implement
-	 * the attack algorithm.
-	 * @return number of cycles
+	 * the attack algorithm. Remember to set attackSuccess
 	 */
-	public abstract int algorithm();
+	protected abstract void algorithm();
 	
 	
 	
 	
 	/** This method is where you will implement
-	 * the ESTIMATED time calculation
+	 * the estimated number of cycles calculation
 	 * @return
 	 */
-	public abstract int calculateMetric();
+	protected abstract int calculateMetric();
 	
 	
 	

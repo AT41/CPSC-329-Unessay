@@ -10,6 +10,8 @@ import gui.Main.AttackType;
 import gui.MainGUI;
 
 public class AppController {
+	
+	
 	class RunButtonListener implements ActionListener{
 		private MainGUI view;
 		RunButtonListener(MainGUI view) {
@@ -25,10 +27,13 @@ public class AppController {
 			
 			// step 2: run algorithms
 			model.runAlgorithms();
+		
 			//System.out.println(model.bfAttack.attackSuccess);
 			//this.view.setStatusFor(AttackType.BRUTE_FORCE, AttackStatus.POSSIBLE);
 		}
 	}
+	
+	
 	class AttackDoneListener implements AttackListener{
 		private MainGUI view;
 		AttackDoneListener(MainGUI view) {
@@ -38,8 +43,11 @@ public class AppController {
 		public void attackComplete(AttackType type, AttackStatus status) {
 			// TODO Auto-generated method stub
 			this.view.setStatusFor(type, status);
+		}	
+		@Override
+		public void updateConsole(String estimatedGuesses) {
+			this.view.printToGUIConsole("Estimated number of gueses: " + estimatedGuesses);
 		}
-		
 	}
 	private MainGUI view;
 	private AppModel model;

@@ -2,24 +2,23 @@ package types;
 
 public class BruteForceAttack extends AttackAPI{
 
-	public BruteForceAttack(String hashedPassword, String plainTextPassword) {
-		this.cycleMAX = 100000;
-		this.hashedPassword = hashedPassword;
-		this.plainTextPassword = plainTextPassword;
-		this.attackSuccess = false;
+	public BruteForceAttack(String password) {
+		//this.hashedPassword = hashedPassword;
+		//this.plainTextPassword = plainTextPassword;
+		this.attackSuccess = true;;
 		this.cycleCounter = 0;
 		this.estimatedGuesses = 0;
 	}
 
 	@Override
-	public int algorithm() {
+	public void algorithm() {
 		// TODO Auto-generated method stub
-		return 0;
 	}
 
 	@Override
 	public int calculateMetric() {
 		// TODO Auto-generated method stub
+		
 		return 0;
 	}
 
