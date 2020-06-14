@@ -1,86 +1,29 @@
 package types;
 
+import java.util.ArrayList;
+
+import gui.Main.AttackStatus;
+import gui.Main.AttackType;
+
 public class AppModel {
 	
 	// Stores the hashed password, used to verify guesses
 	String hashedPassword;
-	
-	// can be used to update console in view
-	String currentGuess;
-	
-	// stores the total number of attempts, or we can also use it to store the current attempt number
-	int guessCounter;
-	
-	// either used to display completion status or success status, I haven't decided yet
-	boolean dictionaryAttackStatus;
-	boolean bruteForceAttackStatus;
-	boolean commonPasswordAttackStatus;
-	boolean rainbowTableAttackStatus;
+
+	// Stores the plain text password, used to calculate time metrics
+	String plainTextPassword;
 	
 	// model stores instance of the attack so it can call it's functions
 	BruteForceAttack bfAttack;
 	
+	ArrayList<AttackListener> controllerListener;
+	
 	// constructor
 	public AppModel(){
-		this.hashedPassword = "";
-		this.currentGuess = "";
-		this.guessCounter = 0;
-		this.dictionaryAttackStatus = false;
-		this.bruteForceAttackStatus = false;
-		this.commonPasswordAttackStatus = false;
-		this.rainbowTableAttackStatus = false;
-		
-		this.bfAttack = new BruteForceAttack();
+		this.hashedPassword = "";	
+		this.plainTextPassword = "";
+		controllerListener = new ArrayList<AttackListener>();
 	}
-	
-	public boolean getDictionaryAttackStatus() {
-		return dictionaryAttackStatus;
-	}
-
-	public void setDictionaryAttackStatus(boolean dictionaryAttackStatus) {
-		this.dictionaryAttackStatus = dictionaryAttackStatus;
-	}
-
-	public boolean getBruteForceAttackStatus() {
-		return bruteForceAttackStatus;
-	}
-
-	public void setBruteForceAttackStatus(boolean bruteForceAttackStatus) {
-		this.bruteForceAttackStatus = bruteForceAttackStatus;
-	}
-
-	public boolean getCommonPasswordAttackStatus() {
-		return commonPasswordAttackStatus;
-	}
-
-	public void setCommonPasswordAttackStatus(boolean commonPasswordAttackStatus) {
-		this.commonPasswordAttackStatus = commonPasswordAttackStatus;
-	}
-
-	public boolean getRainbowTableAttackStatus() {
-		return rainbowTableAttackStatus;
-	}
-
-	public void setRainbowTableAttackStatus(boolean rainbowTableAttackStatus) {
-		this.rainbowTableAttackStatus = rainbowTableAttackStatus;
-	}
-
-	public int getGuessCounter() {
-		return this.guessCounter;
-	}
-	
-	public void incrGuessCounter() {
-		this.guessCounter++;
-	}
-	
-	public String getCurrentGuess() {
-		return this.currentGuess;
-	}
-	
-	public void setCurrentGuess(String guess) {
-		this.currentGuess = guess;
-	}
-	
 	
 	public String getHashedPassword() {
 		return this.hashedPassword;
@@ -88,6 +31,11 @@ public class AppModel {
 	
 	public void setHashedPassword(String plainTextPass) {
 		this.hashedPassword = hashPassword(plainTextPass);
+	}
+	
+	
+	public void addAttackListener(AttackListener updatesAttackStatus) {
+		controllerListener.add(updatesAttackStatus);
 	}
 	
 	/**
@@ -102,12 +50,21 @@ public class AppModel {
 	
 	public void runAlgorithms() {
 		
-		// step 2: run algorithm 1
-		this.bfAttack.calculateMetrics();
+		this.bfAttack = new BruteForceAttack(hashedPassword, plainTextPassword);
+		this.bfAttack.run();
+		finishedAttackEvent(AttackType.BRUTE_FORCE,this.bfAttack.attackSuccess ? AttackStatus.POSSIBLE : AttackStatus.IMPOSSIBLE);
 		
-		// step 3: update view with results from algorithm 1
-		this.bfAttack.updateMetrics();
+		
+		
 		
 	}
+	
+	public void finishedAttackEvent(AttackType type, AttackStatus status) {
+		for(AttackListener al : this.controllerListener) {
+			al.attackComplete(type, status);
+		}
+	}
+	
+	
 	
 }
