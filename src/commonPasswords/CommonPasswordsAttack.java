@@ -22,10 +22,11 @@ public class CommonPasswordsAttack extends AttackAPI {
 		this.password = plaintextPassword;
 	}
 	@Override
-	protected void algorithm() {
+	protected BigInteger calculateMetric() {
 		File[] files = new File(allPasswords).listFiles();
 		BufferedReader br;
 		String toCompare = "";
+		BigInteger estimatedGuesses = BigInteger.ZERO;
 		for (int i = 0; i < files.length; i++) {
 			System.out.println("Moved to new file: " + i);
 			try {
@@ -34,11 +35,12 @@ public class CommonPasswordsAttack extends AttackAPI {
 			} catch (FileNotFoundException e) {
 				System.err.println("File at index " + i + " wasn't found");
 				e.printStackTrace();
-				return;
+				return BigInteger.ONE.negate();
 			}
 			try {
 				toCompare = br.readLine();
 				while (toCompare != null) {
+					estimatedGuesses = estimatedGuesses.add(BigInteger.ONE);
 					int levenDist = calculateLevenschtein(this.password, toCompare);
 					if (currentLevenschteinDistance > levenDist) {
 						this.currentLevenschteinDistance =  levenDist;
@@ -50,7 +52,7 @@ public class CommonPasswordsAttack extends AttackAPI {
 						System.out.println(this.currentLevenschteinDistance);
 						System.out.println(this.levenGuess);
 						this.attackSuccess = true;
-						return;
+						return estimatedGuesses;
 					}
 					
 					toCompare = br.readLine();
@@ -58,7 +60,7 @@ public class CommonPasswordsAttack extends AttackAPI {
 			} catch (IOException e) {
 				System.err.println("Could not read line");
 				e.printStackTrace();
-				return;
+				return BigInteger.ONE.negate();
 			}
 		}
 
@@ -66,12 +68,7 @@ public class CommonPasswordsAttack extends AttackAPI {
 		System.out.println(this.currentLevenschteinDistance);
 		System.out.println(this.levenGuess);
 		
-		return;
-	}
-	
-	@Override
-	protected BigInteger calculateMetric() {
-		return BigInteger.valueOf(-1);
+		return estimatedGuesses;
 	}
 
 	private int calculateLevenschtein(String s1, String s2) {

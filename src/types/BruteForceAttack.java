@@ -10,14 +10,8 @@ public class BruteForceAttack extends AttackAPI{
 		this.password = password;
 		this.attackSuccess = true;
 		this.cycleCounter = 0;
-		this.estimatedGuesses = BigInteger.ZERO;
 	}
-
-	@Override
-	public void algorithm() {
-		// TODO Auto-generated method stub
-	}
-
+	
 	@Override
 	public BigInteger calculateMetric() {
 		// TODO Auto-generated method stub
