@@ -23,7 +23,7 @@ import javax.swing.JTextArea;
 import javax.swing.JTextField;
 //A GUI program is written as a subclass of Frame - the top-level container
 //This subclass inherits all properties from Frame, e.g., title, icon, buttons, content-pane
-public class Main extends Frame implements MainGUI {
+public class AppView extends Frame implements GUI {
 	public static final Color BORDER_COLOR = Color.black;
 	public static enum AttackType {
 		BRUTE_FORCE,
@@ -62,7 +62,7 @@ public class Main extends Frame implements MainGUI {
 		this.userPanelComponents.calculateButton.setEnabled(shouldEnable);
 	}
 	
-	public Main() {
+	public AppView() {
 		this.addWindowListener(new WindowAdapter() {  
             public void windowClosing(WindowEvent e) {  
                 dispose();  
@@ -116,7 +116,7 @@ public class Main extends Frame implements MainGUI {
 		userInput.add(calculateButton);
 		
 		JTextArea console = new JTextArea();
-		console.setBorder(BorderFactory.createLineBorder(Main.BORDER_COLOR));
+		console.setBorder(BorderFactory.createLineBorder(AppView.BORDER_COLOR));
 		console.setEditable(false);
 		console.setVisible(true);
 		userInput.add(console);
@@ -127,15 +127,15 @@ public class Main extends Frame implements MainGUI {
 	
 	private LeftPanel createLeftSide() {
 		JPanel leftPanel = new JPanel();
-		leftPanel.setLayout(new GridLayout(Main.ATTACK_NAMES.length, 1));
+		leftPanel.setLayout(new GridLayout(AppView.ATTACK_NAMES.length, 1));
 		leftPanel.setVisible(true);
-		leftPanel.setBorder(BorderFactory.createLineBorder(Main.BORDER_COLOR));
+		leftPanel.setBorder(BorderFactory.createLineBorder(AppView.BORDER_COLOR));
 		
-		JLabel[] allLabels = new JLabel[Main.ATTACK_NAMES.length];
-		for (int i = 0; i < Main.ATTACK_NAMES.length; i++) {
-			allLabels[i] = new JLabel(Main.ATTACK_NAMES[i]);
+		JLabel[] allLabels = new JLabel[AppView.ATTACK_NAMES.length];
+		for (int i = 0; i < AppView.ATTACK_NAMES.length; i++) {
+			allLabels[i] = new JLabel(AppView.ATTACK_NAMES[i]);
 			allLabels[i].setHorizontalAlignment(JLabel.CENTER);
-			allLabels[i].setBorder(BorderFactory.createMatteBorder(0, 0, i == (Main.ATTACK_NAMES.length-1)? 0 : 1, 0, Main.BORDER_COLOR));
+			allLabels[i].setBorder(BorderFactory.createMatteBorder(0, 0, i == (AppView.ATTACK_NAMES.length-1)? 0 : 1, 0, AppView.BORDER_COLOR));
 			leftPanel.add(allLabels[i]);
 		}
 		
@@ -145,21 +145,21 @@ public class Main extends Frame implements MainGUI {
 	private RightPanel createRightSide() {
 		JPanel rightPanel = new JPanel();
 		rightPanel.setLayout(new BorderLayout());
-		rightPanel.setBorder(BorderFactory.createLineBorder(Main.BORDER_COLOR));
+		rightPanel.setBorder(BorderFactory.createLineBorder(AppView.BORDER_COLOR));
 		
 		JLabel title = new JLabel("Statistics");
 		title.setHorizontalAlignment(JLabel.CENTER);
-		title.setBorder(BorderFactory.createCompoundBorder(BorderFactory.createMatteBorder(0, 0, 1, 0, Main.BORDER_COLOR), BorderFactory.createEmptyBorder(8, 0, 20, 0)));
+		title.setBorder(BorderFactory.createCompoundBorder(BorderFactory.createMatteBorder(0, 0, 1, 0, AppView.BORDER_COLOR), BorderFactory.createEmptyBorder(8, 0, 20, 0)));
 		rightPanel.add(title, BorderLayout.NORTH);
 		
-		JLabel[] attackLabels = new JLabel[Main.ATTACK_NAMES.length];
-		JLabel[] outcomeLabels = new JLabel[Main.ATTACK_NAMES.length];
+		JLabel[] attackLabels = new JLabel[AppView.ATTACK_NAMES.length];
+		JLabel[] outcomeLabels = new JLabel[AppView.ATTACK_NAMES.length];
 		
 		Container temp = new Container();
 		temp.setVisible(true);
 		temp.setLayout(new BoxLayout(temp, BoxLayout.PAGE_AXIS));
-		for (int i = 0; i < Main.ATTACK_NAMES.length; i++) {
-			attackLabels[i] = new JLabel(Main.ATTACK_NAMES[i]);
+		for (int i = 0; i < AppView.ATTACK_NAMES.length; i++) {
+			attackLabels[i] = new JLabel(AppView.ATTACK_NAMES[i]);
 			outcomeLabels[i] = new JLabel();
 			
 			temp.add(attackLabels[i]);

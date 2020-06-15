@@ -2,10 +2,10 @@ package gui;
 
 import java.awt.event.ActionListener;
 
-import gui.Main.AttackStatus;
-import gui.Main.AttackType;
+import gui.AppView.AttackStatus;
+import gui.AppView.AttackType;
 
-public interface MainGUI {
+public interface GUI {
 	public void setButtonEnableOrDisable(boolean shouldEnable);
 	
 	/**

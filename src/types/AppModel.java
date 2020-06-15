@@ -3,8 +3,8 @@ package types;
 import java.math.BigInteger;
 import java.util.ArrayList;
 
-import gui.Main.AttackStatus;
-import gui.Main.AttackType;
+import gui.AppView.AttackStatus;
+import gui.AppView.AttackType;
 
 import commonPasswords.CommonPasswordsAttack;
 

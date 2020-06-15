@@ -5,16 +5,16 @@ import java.awt.event.ActionListener;
 
 import javax.swing.JTextField;
 
-import gui.Main.AttackStatus;
-import gui.Main.AttackType;
-import gui.MainGUI;
+import gui.AppView.AttackStatus;
+import gui.AppView.AttackType;
+import gui.GUI;
 
 public class AppController {
 	
 	
 	class RunButtonListener implements ActionListener{
-		private MainGUI view;
-		RunButtonListener(MainGUI view) {
+		private GUI view;
+		RunButtonListener(GUI view) {
 			this.view = view;
 		}
 		
@@ -35,8 +35,8 @@ public class AppController {
 	
 	
 	class AttackDoneListener implements AttackListener{
-		private MainGUI view;
-		AttackDoneListener(MainGUI view) {
+		private GUI view;
+		AttackDoneListener(GUI view) {
 			this.view = view;
 		}
 		@Override
@@ -49,7 +49,7 @@ public class AppController {
 			this.view.printToGUIConsole(message);
 		}
 	}
-	private MainGUI view;
+	private GUI view;
 	private AppModel model;
 	
 	
@@ -59,7 +59,7 @@ public class AppController {
 	 * @param view
 	 * @param model
 	 */
-	public AppController(MainGUI view, AppModel model){
+	public AppController(GUI view, AppModel model){
 		this.view = view;
 		this.model = model;
 		this.view.addListenerForButton(new RunButtonListener(view));

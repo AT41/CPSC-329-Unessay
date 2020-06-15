@@ -3,7 +3,7 @@ package gui;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
-import gui.Main.AttackStatus;
+import gui.AppView.AttackStatus;
 
 class RightPanel {
 	public JLabel[] outcomes;
