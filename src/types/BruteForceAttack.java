@@ -32,7 +32,7 @@ public class BruteForceAttack extends AttackAPI{
 		int numOfAllowedChars = 126 - 31; // from SPACE (32) to ~ on ascii table (126) ;
 		//System.out.println(estimate);
 		// num of guesses it took to reach current length of string
-		for(int x = 0; x < passLen; x++) {
+		for(int x = 1; x < passLen; x++) {
 			BigInteger oldEstimate = estimate.add(BigInteger.ZERO);
 			estimate = estimate.add(BigInteger.valueOf(numOfAllowedChars).pow(x));
 			//System.out.printf("reaching: %s + (%d ^ %d)) = %s\n", oldEstimate.toString(), numOfAllowedChars, x, estimate.toString());
@@ -43,6 +43,7 @@ public class BruteForceAttack extends AttackAPI{
 			estimate = estimate.add(BigInteger.valueOf((long)asciiValues[(passLen-1)-x]).multiply(BigInteger.valueOf(numOfAllowedChars).pow(x)));
 			//System.out.printf("current: %d + (%d * (%d ^ %d)) = %d\n", oldEstimate,asciiValues[(passLen-1)-x], numOfAllowedChars, x, estimate);
 		}
+		estimate = estimate.add(BigInteger.ONE);
 		//System.out.println("final: " + estimate);
 		return estimate;
 	}
