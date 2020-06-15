@@ -6,6 +6,8 @@ import java.util.ArrayList;
 import gui.Main.AttackStatus;
 import gui.Main.AttackType;
 
+import commonPasswords.CommonPasswordsAttack;
+
 public class AppModel {
 	
 	// Stores the hashed password, used to verify guesses
@@ -16,6 +18,7 @@ public class AppModel {
 	
 	// model stores instance of the attack so it can call it's functions
 	BruteForceAttack bfAttack;
+	CommonPasswordsAttack cpAttack; 
 	
 	ArrayList<AttackListener> controllerListener;
 	
@@ -60,11 +63,11 @@ public class AppModel {
 		this.bfAttack.run();
 		finishedAttackEvent(AttackType.BRUTE_FORCE,this.bfAttack.attackSuccess ? AttackStatus.POSSIBLE : AttackStatus.IMPOSSIBLE);
 		callUpdateConsole("Estimated Number of guesses: " + this.bfAttack.estimatedGuesses.toString());
-		/*
-		this.cpAttack = new CommonPasswordAttack();
+		
+		this.cpAttack = new CommonPasswordsAttack(plainTextPassword);
 		this.cpAttack.run();
 		finishedAttackEvent(AttackType.COMMON_PASSWORDS, this.cpAttack.attackSuccess ? AttackStatus.POSSIBLE : AttackStatus.IMPOSSIBLE);
-		*/
+		
 		
 	}
 	
