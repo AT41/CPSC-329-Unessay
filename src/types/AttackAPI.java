@@ -2,31 +2,57 @@ package types;
 
 public abstract class AttackAPI {
 
-	/** 
-	 * This method is used to update metrics 
-	 *  such as the attack's respective Status,
-	 *  currentGuess, or guessCounter
-	 */
-	public abstract void updateMetrics();
 	
-	/** 
-	 * This method is used to calculate number
-	 *  of guess that this attack might take
-	 *  to crack the password if it were
-	 *  to try to run the algorithm on it.
-	 */
-	public abstract void calculateMetrics();
+	final static int cycleMAX = 10000; // set a reasonable cycle limit on your algorithm
 	
-	/** 
-	 * This method can be used to actually make.
-	 * a guess. We can implement this if we have
-	 * time at the end of the project.
-	 */
-	public abstract void makeGuess();
+	//String hashedPassword;	// user's hashed password
+	//String plainTextPassword; // user's plain text password
 	
-	/** 
-	 * This method would be used to check the guess,
-	 * that was just made. 
+	String password; 	// hashed or plain text depending on algorithm
+	
+	boolean attackSuccess;  // set this to true if cycleCounter < cycleMax 
+	int cycleCounter;
+	int estimatedGuesses;
+	
+	
+	
+	
+	public void run() {
+		//algorithm();
+		this.estimatedGuesses = returnMetrics();
+	}
+	
+	
+	
+	/** This method is where you implement
+	 * the attack algorithm. Remember to set attackSuccess
 	 */
-	public abstract void checkGuess();
+	protected abstract void algorithm();
+	
+	
+	
+	
+	/** This method is where you will implement
+	 * the estimated number of cycles calculation
+	 * @return
+	 */
+	protected abstract int calculateMetric();
+	
+	
+	
+	
+	/** This method will return either
+	 * the number attempts taken
+	 * or the estimated number of attempts
+	 */
+	public int returnMetrics() {
+		if(attackSuccess) {
+			return cycleCounter;
+		}
+		return calculateMetric();
+	}
+	
+	
+	
+	
 }
