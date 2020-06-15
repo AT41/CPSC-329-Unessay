@@ -1,5 +1,6 @@
 package types;
 
+import java.math.BigInteger;
 import java.util.ArrayList;
 
 import gui.Main.AttackStatus;
@@ -32,7 +33,13 @@ public class AppModel {
 	public void setHashedPassword(String plainTextPass) {
 		this.hashedPassword = hashPassword(plainTextPass);
 	}
+	public String getPlainTextPassword() {
+		return this.plainTextPassword;
+	}
 	
+	public void setPlainTextPassword(String plainTextPass) {
+		this.plainTextPassword = plainTextPass;
+	}
 	
 	public void addAttackListener(AttackListener updatesAttackStatus) {
 		controllerListener.add(updatesAttackStatus);
@@ -52,7 +59,7 @@ public class AppModel {
 		this.bfAttack = new BruteForceAttack(plainTextPassword);
 		this.bfAttack.run();
 		finishedAttackEvent(AttackType.BRUTE_FORCE,this.bfAttack.attackSuccess ? AttackStatus.POSSIBLE : AttackStatus.IMPOSSIBLE);
-		callUpdateConsole(this.bfAttack.estimatedGuesses);
+		callUpdateConsole("Estimated Number of guesses: " + this.bfAttack.estimatedGuesses.toString());
 		/*
 		this.cpAttack = new CommonPasswordAttack();
 		this.cpAttack.run();
@@ -67,9 +74,9 @@ public class AppModel {
 		}
 	}
 	
-	public void callUpdateConsole(int estimatedGuesses) {
+	public void callUpdateConsole(String message) {
 		for(AttackListener al : this.controllerListener) {
-			al.updateConsole(Integer.toString(estimatedGuesses));
+			al.updateConsole(message);
 		}
 	}
 	

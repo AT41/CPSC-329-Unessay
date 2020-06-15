@@ -5,6 +5,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
+import java.math.BigInteger;
 
 import types.AttackAPI;
 
@@ -69,8 +70,8 @@ public class CommonPasswordsAttack extends AttackAPI {
 	}
 	
 	@Override
-	protected int calculateMetric() {
-		return -1;
+	protected BigInteger calculateMetric() {
+		return BigInteger.valueOf(-1);
 	}
 
 	private int calculateLevenschtein(String s1, String s2) {

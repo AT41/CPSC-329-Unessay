@@ -22,12 +22,12 @@ public class AppController {
 		public void actionPerformed(ActionEvent e) {
 			this.view.setButtonEnableOrDisable(false);
 			System.out.println(((JTextField)e.getSource()).getText());
-			// step 1: hash the user's password
-			// model.setHashedPassword();
-			
+
+			model.setPlainTextPassword(((JTextField)e.getSource()).getText());
+			model.setHashedPassword(((JTextField)e.getSource()).getText());
 			// step 2: run algorithms
 			model.runAlgorithms();
-		
+			
 			//System.out.println(model.bfAttack.attackSuccess);
 			//this.view.setStatusFor(AttackType.BRUTE_FORCE, AttackStatus.POSSIBLE);
 		}
@@ -45,8 +45,8 @@ public class AppController {
 			this.view.setStatusFor(type, status);
 		}	
 		@Override
-		public void updateConsole(String estimatedGuesses) {
-			this.view.printToGUIConsole("Estimated number of gueses: " + estimatedGuesses);
+		public void updateConsole(String message) {
+			this.view.printToGUIConsole(message);
 		}
 	}
 	private MainGUI view;

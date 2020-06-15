@@ -1,5 +1,7 @@
 package types;
 
+import java.math.BigInteger;
+
 public abstract class AttackAPI {
 
 	
@@ -12,7 +14,7 @@ public abstract class AttackAPI {
 	
 	protected boolean attackSuccess;  // set this to true if cycleCounter < cycleMax 
 	protected int cycleCounter;
-	int estimatedGuesses;
+	BigInteger estimatedGuesses;
 	
 	
 	
@@ -26,6 +28,10 @@ public abstract class AttackAPI {
 	
 	/** This method is where you implement
 	 * the attack algorithm. Remember to set attackSuccess
+	 * 
+	 * NO LONGER BEING USED
+	 * SINCE WE DONT HAVE TIME
+	 * 
 	 */
 	protected abstract void algorithm();
 	
@@ -36,7 +42,7 @@ public abstract class AttackAPI {
 	 * the estimated number of cycles calculation
 	 * @return
 	 */
-	protected abstract int calculateMetric();
+	protected abstract BigInteger calculateMetric();
 	
 	
 	
@@ -45,10 +51,16 @@ public abstract class AttackAPI {
 	 * the number attempts taken
 	 * or the estimated number of attempts
 	 */
-	public int returnMetrics() {
+	public BigInteger returnMetrics() {
+		
+		/*
+		 * This part of the algorithm used to determine if the the algorithm succeeded
+		 * but since we are no longer implementing the actual attempt, this is no longer needed
 		if(attackSuccess) {
 			return cycleCounter;
-		}
+		}*/
+		
+		
 		return calculateMetric();
 	}
 	

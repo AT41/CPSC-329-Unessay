@@ -5,5 +5,5 @@ import gui.Main.AttackType;
 
 public interface AttackListener {
 	void attackComplete(AttackType type, AttackStatus status);
-	void updateConsole(String estimatedGuesses);
+	void updateConsole(String message);
 }
