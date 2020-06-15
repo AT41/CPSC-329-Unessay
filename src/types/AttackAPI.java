@@ -11,7 +11,7 @@ public abstract class AttackAPI {
 	
 	protected boolean attackSuccess;  // set this to true if cycleCounter < cycleMax 
 	protected int cycleCounter;
-	private BigInteger estimatedGuesses = BigInteger.ZERO;
+	BigInteger estimatedGuesses = BigInteger.ZERO;
 	
 	
 	
