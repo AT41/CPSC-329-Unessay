@@ -10,27 +10,18 @@ import types.AttackAPI;
 
 public class CommonPasswordsAttack extends AttackAPI {
 	private static final String allPasswords = "src/commonPasswords/passwordFiles";
-	private String plaintextPassword;
 	private int currentLevenschteinDistance = Integer.MAX_VALUE;
 	private String levenGuess = "";
 	
 	public static void main(String[] args) {
 		AttackAPI cpa = new CommonPasswordsAttack("fwefw");
-		cpa.calculateMetrics();
 	}
 	
 	public CommonPasswordsAttack(String plaintextPassword) {
-		this.plaintextPassword = plaintextPassword;
+		this.password = plaintextPassword;
 	}
-	
 	@Override
-	public void updateMetrics() {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void calculateMetrics() {
+	protected void algorithm() {
 		File[] files = new File(allPasswords).listFiles();
 		BufferedReader br;
 		String toCompare = "";
@@ -47,16 +38,17 @@ public class CommonPasswordsAttack extends AttackAPI {
 			try {
 				toCompare = br.readLine();
 				while (toCompare != null) {
-					int levenDist = calculateLevenschtein(this.plaintextPassword, toCompare);
+					int levenDist = calculateLevenschtein(this.password, toCompare);
 					if (currentLevenschteinDistance > levenDist) {
 						this.currentLevenschteinDistance =  levenDist;
 						this.levenGuess = toCompare;
 					}
 					
-					if (toCompare.equals(this.plaintextPassword)) {
+					if (toCompare.equals(this.password)) {
 						System.out.println("Got a match!");
 						System.out.println(this.currentLevenschteinDistance);
 						System.out.println(this.levenGuess);
+						this.attackSuccess = true;
 						return;
 					}
 					
@@ -69,22 +61,16 @@ public class CommonPasswordsAttack extends AttackAPI {
 			}
 		}
 
+		this.attackSuccess = false;
 		System.out.println(this.currentLevenschteinDistance);
 		System.out.println(this.levenGuess);
-		//System.out.println(this.calculateLevenschtein("123456", "aw23"));
-		//System.out.println(this.calculateLevenschtein("123456", "awefweaf23aqf3"));
-	}
-
-	@Override
-	public void makeGuess() {
-		// TODO Auto-generated method stub
 		
+		return;
 	}
-
+	
 	@Override
-	public void checkGuess() {
-		// TODO Auto-generated method stub
-		
+	protected int calculateMetric() {
+		return -1;
 	}
 
 	private int calculateLevenschtein(String s1, String s2) {
@@ -101,14 +87,11 @@ public class CommonPasswordsAttack extends AttackAPI {
 		}
 	}
 	
-	// TODO ANTHONY Consider memoization if too slow
 	private int levenschtein(String s1, String s2, int length1, int length2, int[][] memo) {
 		if (memo[length1][length2] != -1) {
-			int temp = memo[length1][length2];
-			return /*temp >= currentLevenschteinDistance ? Integer.MAX_VALUE / 2 :*/ temp;
+			return memo[length1][length2];
 		} else if (s1.length() == length1 || s2.length() == length2) {
-			int temp = Math.max(s1.length() - length1, s2.length() - length2);
-			int ans = /*temp >= currentLevenschteinDistance? Integer.MAX_VALUE / 2:*/ temp;
+			int ans = Math.max(s1.length() - length1, s2.length() - length2);
 			memo[length1][length2] = ans;
 			return ans;
 		} else {
@@ -120,4 +103,5 @@ public class CommonPasswordsAttack extends AttackAPI {
 			return ans;
 		}
 	}
+
 }

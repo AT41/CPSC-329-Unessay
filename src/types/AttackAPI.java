@@ -3,15 +3,15 @@ package types;
 public abstract class AttackAPI {
 
 	
-	final static int cycleMAX = 10000; // set a reasonable cycle limit on your algorithm
+	protected final static int cycleMAX = 10000; // set a reasonable cycle limit on your algorithm
 	
 	//String hashedPassword;	// user's hashed password
 	//String plainTextPassword; // user's plain text password
 	
-	String password; 	// hashed or plain text depending on algorithm
+	protected String password; 	// hashed or plain text depending on algorithm
 	
-	boolean attackSuccess;  // set this to true if cycleCounter < cycleMax 
-	int cycleCounter;
+	protected boolean attackSuccess;  // set this to true if cycleCounter < cycleMax 
+	protected int cycleCounter;
 	int estimatedGuesses;
 	
 	

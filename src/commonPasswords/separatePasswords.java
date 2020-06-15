@@ -17,10 +17,6 @@ import java.io.IOException;
 public class separatePasswords {
 	private static String fileExtension = "src/commonPasswords/";
 	public static void main(String[] args) throws IOException {
-		// TODO Auto-generated method stub
-		/*FileWriter file = new FileWriter("test.txt");
-		file.append('c');
-		file.close();*/
 		BufferedReader br = new BufferedReader(new FileReader(fileExtension + "passwords.txt"));
 		int listNumber = 0;
 		br.mark(1000);
