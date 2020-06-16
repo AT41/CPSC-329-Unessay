@@ -7,12 +7,15 @@ import java.awt.Container;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.Frame;  // Using Frame class in package java.awt
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
 import java.awt.GridLayout;
 import java.awt.Label;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.math.BigInteger;
 
 import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
@@ -21,6 +24,8 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
+
+import gui.AppView.AttackType;
 //A GUI program is written as a subclass of Frame - the top-level container
 //This subclass inherits all properties from Frame, e.g., title, icon, buttons, content-pane
 public class AppView extends Frame implements GUI {
@@ -38,8 +43,8 @@ public class AppView extends Frame implements GUI {
 	private static final String[] ATTACK_NAMES = {"Brute Force Attack", "Common Passwords Attack", "Rainbow Table Attack", "Dictionary Attack"};
 	private static final int[] WIDTH_HEIGHT = {700, 500};
 
-	private RightPanel rightContainer;
-	private LeftPanel leftContainer;
+	private RightPanel rightPanel;
+	private LeftPanel leftPanel;
 	private UserPanelComponents userPanelComponents;
 
 
@@ -51,7 +56,7 @@ public class AppView extends Frame implements GUI {
 	}
 	@Override
 	public void setStatusFor(AttackType type, AttackStatus status) {
-		this.rightContainer.changeLabelStatus(type.ordinal(), status);
+		this.rightPanel.changeLabelStatus(type.ordinal(), status);
 	}
 	@Override
 	public void printToGUIConsole(String text) {
@@ -60,6 +65,18 @@ public class AppView extends Frame implements GUI {
 	@Override
 	public void setButtonEnableOrDisable(boolean shouldEnable) {
 		this.userPanelComponents.calculateButton.setEnabled(shouldEnable);
+	}
+	@Override
+	public void setTotalGuesses(BigInteger guesses) {
+		this.rightPanel.setTotalGuesses(guesses);
+	}
+	@Override
+	public void setGuessesFor(AttackType type, BigInteger guesses) {
+		this.rightPanel.setGuessesFor(type, guesses);
+	}
+	@Override
+	public void setAdditionalCommentsFor(AttackType type, String comments) {
+		this.rightPanel.setAdditionalStat(type, comments);
 	}
 	
 	public AppView() {
@@ -83,10 +100,10 @@ public class AppView extends Frame implements GUI {
 		mainPanel.setVisible(true);
 		add(mainPanel);
 		
-		this.leftContainer = createLeftSide();
-		mainPanel.add(this.leftContainer.panel, BorderLayout.WEST);
-		this.rightContainer = createRightSide();
-		mainPanel.add(rightContainer.panel, BorderLayout.EAST);
+		this.leftPanel = createLeftSide();
+		mainPanel.add(this.leftPanel.panel, BorderLayout.WEST);
+		this.rightPanel = createRightSide();
+		mainPanel.add(rightPanel.panel, BorderLayout.EAST);
 		
 		JPanel userInputPanel = createUserInputPage();
 		mainPanel.add(userInputPanel, BorderLayout.CENTER);
@@ -149,35 +166,61 @@ public class AppView extends Frame implements GUI {
 		
 		JLabel title = new JLabel("Statistics");
 		title.setHorizontalAlignment(JLabel.CENTER);
-		title.setBorder(BorderFactory.createCompoundBorder(BorderFactory.createMatteBorder(0, 0, 1, 0, AppView.BORDER_COLOR), BorderFactory.createEmptyBorder(8, 0, 20, 0)));
+		title.setBorder(BorderFactory.createCompoundBorder(BorderFactory.createMatteBorder(0, 0, 1, 0, AppView.BORDER_COLOR), BorderFactory.createEmptyBorder(8, 0, 10, 0)));
 		rightPanel.add(title, BorderLayout.NORTH);
 		
 		JLabel[] attackLabels = new JLabel[AppView.ATTACK_NAMES.length];
 		JLabel[] outcomeLabels = new JLabel[AppView.ATTACK_NAMES.length];
+		JLabel[] attackGuesses = new JLabel[AppView.ATTACK_NAMES.length];
+		JTextArea[] additionalStats = new JTextArea[AppView.ATTACK_NAMES.length];
 		
-		Container temp = new Container();
+		JPanel temp = new JPanel();
 		temp.setVisible(true);
 		temp.setLayout(new BoxLayout(temp, BoxLayout.PAGE_AXIS));
 		for (int i = 0; i < AppView.ATTACK_NAMES.length; i++) {
-			attackLabels[i] = new JLabel(AppView.ATTACK_NAMES[i]);
-			outcomeLabels[i] = new JLabel();
+			JPanel holdsOutcomesAndCountAndAdditional = new JPanel();
+			holdsOutcomesAndCountAndAdditional.setLayout(new GridLayout(3, 1));
+			holdsOutcomesAndCountAndAdditional.setBorder(BorderFactory.createLineBorder(Color.green));
 			
-			temp.add(attackLabels[i]);
-			temp.add(outcomeLabels[i]);
+			JPanel holdsAttackAndOutcome = new JPanel(new FlowLayout(FlowLayout.LEFT));
+			holdsAttackAndOutcome.setVisible(true);
+			attackLabels[i] = new JLabel(AppView.ATTACK_NAMES[i] + ":");
+			outcomeLabels[i] = new JLabel();
+			holdsAttackAndOutcome.add(attackLabels[i]);
+			holdsAttackAndOutcome.add(outcomeLabels[i]);
+			holdsOutcomesAndCountAndAdditional.add(holdsAttackAndOutcome);
+			
+			JLabel attackGuess = new JLabel();
+			attackGuesses[i] = attackGuess;
+			attackGuess.setBorder(BorderFactory.createEmptyBorder(0, 5, 0, 0));
+			holdsOutcomesAndCountAndAdditional.add(attackGuess);
+			
+			JTextArea additionalStat = new JTextArea();
+			additionalStat.setOpaque(false);
+			additionalStats[i] = additionalStat;
+			additionalStat.setBorder(BorderFactory.createEmptyBorder(0, 5, 0, 0));
+			additionalStat.setEditable(false);
+			holdsOutcomesAndCountAndAdditional.add(additionalStat);
+			
+			temp.add(holdsOutcomesAndCountAndAdditional);
 		}
+		
+		JPanel overallStats = new JPanel();
+		overallStats.setMaximumSize(new Dimension(Integer.MAX_VALUE, 3000));
+		overallStats.setBorder(BorderFactory.createMatteBorder(1, 0, 0, 0, this.BORDER_COLOR));
+		overallStats.setVisible(true);
+		overallStats.setLayout(new GridBagLayout());
+		JLabel overallLabel = new JLabel("Total Guesses:");
+		JLabel totalGuesses = new JLabel("");
+		GridBagConstraints gbc = new GridBagConstraints();
+		gbc.gridy = 1;
+		overallStats.add(overallLabel);
+		overallStats.add(totalGuesses, gbc);
+		
+		temp.add(overallStats);
+		
 		rightPanel.add(temp, BorderLayout.CENTER);
 		
-		return new RightPanel(rightPanel, outcomeLabels);
+		return new RightPanel(rightPanel, outcomeLabels, attackGuesses, additionalStats, totalGuesses);
 	}
-	
-	// This is code proving that we don't need to relinquish control of the main thread to update the display
-	/*private void test(Container c) {
-		JLabel testL = new JLabel();
-		c.add(testL);
-		int i = 0;
-		while (true) {
-			testL.setText(Integer.toString(i));
-			i++;
-		}
-	}*/
 }

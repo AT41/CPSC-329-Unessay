@@ -1,6 +1,7 @@
 package gui;
 
 import java.awt.event.ActionListener;
+import java.math.BigInteger;
 
 import gui.AppView.AttackStatus;
 import gui.AppView.AttackType;
@@ -21,16 +22,15 @@ public interface GUI {
 	 */
 	public void setStatusFor(AttackType type, AttackStatus status);
 	
+	public void setTotalGuesses(BigInteger guesses);
+	
+	public void setGuessesFor(AttackType type, BigInteger guesses);
+	
+	public void setAdditionalCommentsFor(AttackType type, String comments);
+	
 	/**
 	 * Prints to console in center
 	 * @param text
 	 */
 	public void printToGUIConsole(String text);
-	
-	/**
-	 * Sets number of tries for the attack type
-	 * @param attackType
-	 * @param tries
-	 */
-	//public void setTriesFor(AttackType type, int tries);
 }
