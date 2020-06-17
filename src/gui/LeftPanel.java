@@ -13,13 +13,15 @@ class LeftPanel {
 	public JPanel panel;
 	
 	private static final String[] infoMessages = {
-		"bruteForceInfoHere", 
+		"The brute force attack makes the basic assumption that all passwords are crackable using this method given enough time and space. Our brute force calculation calculates approximately how many guesses it would take to crack the given password."
+		+ "\n\nThe way this number is calculated is by adding two numbers. The first number 'a' is a summation p^i where p is the number of possible characters in the password and where 1<=i<p. This number represents each possible password of length"
+		+ " 1<=p-1. \n\nThe second number 'b', is the number of possible passwords of length p, such that each if each password 'x' of length p was converted to a base p number and the user's password 'u' was also converted to a base p number, then b=u-1. \n\nThus our estimate is a+b. ", 
 		
 		"The common passwords attack takes a list of 1 million commonly entered passwords and tests each of them to see if any pass. If any of them pass, the program will show how the existing password ranks in popularity."
 		+ "\n\nAdditionally, our algorithm calculates the minimum Levenschtein distance between your entered password and each of the passwords in our database, as a measurement of how close your password could be to an existing password. "
 		+ "Levenschtein distance is a measurement of the minimum amounts of edits (insertion, deletion, or character swap) it takes to turn one string into another. ",
 		
-		"rainbowTableInfoHere",
+		"The rainbow table attack takes a list of solved md5 hashes and compares them to the md5 hash of the user's password to see if there are any matches.",
 		"dictionaryInfoHere"
 	};
 	
