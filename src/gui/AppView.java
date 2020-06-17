@@ -19,6 +19,7 @@ import java.math.BigInteger;
 
 import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -144,19 +145,36 @@ public class AppView extends Frame implements GUI {
 	
 	private LeftPanel createLeftSide() {
 		JPanel leftPanel = new JPanel();
-		leftPanel.setLayout(new GridLayout(AppView.ATTACK_NAMES.length, 1));
+		leftPanel.setLayout(new BoxLayout(leftPanel, BoxLayout.PAGE_AXIS)/*new GridLayout(AppView.ATTACK_NAMES.length, 1)*/);
 		leftPanel.setVisible(true);
 		leftPanel.setBorder(BorderFactory.createLineBorder(AppView.BORDER_COLOR));
 		
 		JLabel[] allLabels = new JLabel[AppView.ATTACK_NAMES.length];
+		JButton[] infoButtons = new JButton[AppView.ATTACK_NAMES.length];
 		for (int i = 0; i < AppView.ATTACK_NAMES.length; i++) {
+			JPanel temp = new JPanel(new FlowLayout(FlowLayout.LEFT));
+			temp.setBorder(BorderFactory.createMatteBorder(0, 0, 1, 0, AppView.BORDER_COLOR));
+			temp.setVisible(true);
+			temp.setMaximumSize(new Dimension(Integer.MAX_VALUE, 40));
+			
+			ImageIcon icon = new ImageIcon("resources/icon-smaller.png");
+			infoButtons[i] = new JButton(icon);
+			temp.add(infoButtons[i]);
+
 			allLabels[i] = new JLabel(AppView.ATTACK_NAMES[i]);
 			allLabels[i].setHorizontalAlignment(JLabel.CENTER);
-			allLabels[i].setBorder(BorderFactory.createMatteBorder(0, 0, i == (AppView.ATTACK_NAMES.length-1)? 0 : 1, 0, AppView.BORDER_COLOR));
-			leftPanel.add(allLabels[i]);
+			temp.add(allLabels[i]);
+			
+			leftPanel.add(temp);
 		}
 		
-		return new LeftPanel(leftPanel, allLabels);
+		JTextArea attackInfo = new JTextArea("Click on the info boxes for more details!");
+		attackInfo.setBorder(BorderFactory.createEmptyBorder(8, 2, 0, 2));
+		attackInfo.setOpaque(false);
+		attackInfo.setEditable(false);
+		leftPanel.add(attackInfo);
+		
+		return new LeftPanel(leftPanel, allLabels, infoButtons, attackInfo);
 	}
 	
 	private RightPanel createRightSide() {
