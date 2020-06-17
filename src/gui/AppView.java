@@ -23,6 +23,7 @@ import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 
@@ -169,10 +170,14 @@ public class AppView extends Frame implements GUI {
 		}
 		
 		JTextArea attackInfo = new JTextArea("Click on the info boxes for more details!");
-		attackInfo.setBorder(BorderFactory.createEmptyBorder(8, 2, 0, 2));
+		attackInfo.setLineWrap(true);
+		attackInfo.setWrapStyleWord(true);
 		attackInfo.setOpaque(false);
 		attackInfo.setEditable(false);
-		leftPanel.add(attackInfo);
+		
+		JScrollPane scroller = new JScrollPane(attackInfo);
+		scroller.setBorder(BorderFactory.createEmptyBorder(0, 2, 0, 2));
+		leftPanel.add(scroller);
 		
 		return new LeftPanel(leftPanel, allLabels, infoButtons, attackInfo);
 	}
