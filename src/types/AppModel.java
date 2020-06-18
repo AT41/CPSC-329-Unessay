@@ -22,6 +22,7 @@ public class AppModel {
 	BruteForceAttack bfAttack;
 	CommonPasswordsAttack cpAttack; 
 	RainbowTableAttack rpAttack;
+	DictionaryAttack dAttack;
 	
 	ArrayList<AttackListener> controllerListener;
 	
@@ -100,6 +101,11 @@ public class AppModel {
 		this.rpAttack = new RainbowTableAttack(hashedPassword,this);
 		this.rpAttack.run();
 		finishedAttackEvent(AttackType.RAINBOW_TABLE,this.rpAttack.attackSuccess ? AttackStatus.POSSIBLE : AttackStatus.IMPOSSIBLE);
+		
+		
+		this.dAttack = new DictionaryAttack(plainTextPassword,this);
+		this.dAttack.run();
+		finishedAttackEvent(AttackType.DICTIONARY, this.dAttack.attackSuccess ? AttackStatus.POSSIBLE : AttackStatus.IMPOSSIBLE);
 	}
 	
 	public void finishedAttackEvent(AttackType type, AttackStatus status) {
