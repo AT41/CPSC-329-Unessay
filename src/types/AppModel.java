@@ -89,7 +89,7 @@ public class AppModel {
 		//A regular computer would likely make about 100,000 guesses per second. 
 		//https://www.expressvpn.com/blog/how-attackers-brute-force-password/#:~:text=How%20quickly%20an%20attacker%20can,about%20100%2C000%20guesses%20per%20second.
 		BigInteger speed = BigInteger.valueOf(100000);
-		BigInteger time = speed.divide(this.bfAttack.estimatedGuesses);
+		BigInteger time = this.bfAttack.estimatedGuesses.divide(speed);
 		updateAdditionalComments(AttackType.BRUTE_FORCE, "It would take approximately " + time.toString() + "seconds \nto crack this password given a 100000 guesses/sec \nbrute-force attack");
 		//callUpdateConsole("Estimated Number of guesses for bruteforce: " + this.bfAttack.estimatedGuesses.toString());
 		//callUpdateConsole("TESTING TESTING 123");

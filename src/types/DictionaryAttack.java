@@ -18,5 +18,4 @@ public class DictionaryAttack extends AttackAPI{
 		// TODO Auto-generated method stub
 		return null;
 	}
-
 }
