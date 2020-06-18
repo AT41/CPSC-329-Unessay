@@ -33,10 +33,10 @@ public class BruteForceAttack extends AttackAPI{
 		this.alpha = otherCalc(Range.ALPHA,(90-64));
 		this.lower_alpha = otherCalc(Range.LOWER_ALPHA,(122-96));
 		this.mix_alpha = otherCalc(Range.MIX_ALPHA,((90-64)+(122-96)));
-		this.numeric = otherCalc(Range.NUMERIC,(57-46));
-		this.alpha_numeric = otherCalc(Range.ALPHA_NUMERIC,((90-64)+(57-46)));
-		this.lower_alpha_numeric = otherCalc(Range.LOWER_ALPHA_NUMERIC,((122-96)+(57-46)));
-		this.mix_alpha_numeric = otherCalc(Range.MIX_ALPHA_NUMERIC,((122-96)+(57-46)+(90-64)));
+		this.numeric = otherCalc(Range.NUMERIC,(57-47));
+		this.alpha_numeric = otherCalc(Range.ALPHA_NUMERIC,((90-64)+(57-47)));
+		this.lower_alpha_numeric = otherCalc(Range.LOWER_ALPHA_NUMERIC,((122-96)+(57-47)));
+		this.mix_alpha_numeric = otherCalc(Range.MIX_ALPHA_NUMERIC,((122-96)+(57-47)+(90-64)));
 	}
 
 	@Override
@@ -65,7 +65,7 @@ public class BruteForceAttack extends AttackAPI{
 			//System.out.printf("current: %d + (%d * (%d ^ %d)) = %d\n", oldEstimate,asciiValues[(passLen-1)-x], numOfAllowedChars, x, estimate);
 		}
 		estimate = estimate.add(BigInteger.ONE);
-		System.out.println("final: " + estimate);
+		//System.out.println("final: " + estimate);
 		return estimate;
 	}
 
@@ -94,7 +94,7 @@ public class BruteForceAttack extends AttackAPI{
 			//System.out.printf("current: %d + (%d * (%d ^ %d)) = %d\n", oldEstimate,asciiValues[(passLen-1)-x], numOfAllowedChars, x, estimate);
 		}
 		estimate = estimate.add(BigInteger.ONE);
-		System.out.println(range.toString() +" final: " + estimate);
+		//System.out.println(range.toString() +" final: " + estimate);
 		return estimate;
 	}
 
@@ -223,7 +223,7 @@ public class BruteForceAttack extends AttackAPI{
 		//https://www.expressvpn.com/blog/how-attackers-brute-force-password/#:~:text=How%20quickly%20an%20attacker%20can,about%20100%2C000%20guesses%20per%20second.
 
 		BigInteger speed = BigInteger.valueOf(100000);
-		BigInteger time = speed.divide(this.estimatedGuesses);
+		BigInteger time = this.estimatedGuesses.divide(speed);
 		this.model.updateAdditionalComments(AttackType.BRUTE_FORCE, "It would take approximately " + time.toString() + "seconds \nto crack this password given a 100000 guesses/sec \nbrute-force attack");
 	}
 

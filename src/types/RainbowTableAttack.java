@@ -29,17 +29,13 @@ public class RainbowTableAttack extends AttackAPI{
 		// TODO Auto-generated method stub
 		Hashtable<String,String> table = new Hashtable<String,String>();
 		try{
-			int x = 0;
 			String line = "";
 			File file = new File(hashFileLocation);
 			Scanner reader = new Scanner(file);
 			while (reader.hasNextLine()){
 				line = reader.nextLine();
 				String[] lineSplit = line.split(":");
-				//System.out.println(lineSplit[0] + ":" + lineSplit[1]);
-				System.out.println(x);
 				table.put(lineSplit[0],lineSplit[1]);
-				x++;
 			}	
 			reader.close();
 		}catch (FileNotFoundException e) {
