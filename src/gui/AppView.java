@@ -88,7 +88,8 @@ public class AppView extends Frame implements GUI {
             }
         });
 		
-		initialize();
+		javax.swing.SwingUtilities.invokeLater(() -> {initialize();});
+		
 	}
 	
 	private void initialize() {

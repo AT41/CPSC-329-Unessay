@@ -78,7 +78,7 @@ public class AppController {
 	public AppController(GUI view, AppModel model){
 		this.view = view;
 		this.model = model;
-		this.view.addListenerForButton(new RunButtonListener(view));
+		javax.swing.SwingUtilities.invokeLater(() -> this.view.addListenerForButton(new RunButtonListener(view)));
 		this.model.addAttackListener(new AttackDoneListener(view));
 		/*
 		 * the following line calls a method in the view
