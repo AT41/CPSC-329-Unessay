@@ -43,7 +43,7 @@ public class AppView extends Frame implements GUI {
 		POSSIBLE
 	}
 	private static final String[] ATTACK_NAMES = {"Brute Force Attack", "Common Passwords Attack", "Rainbow Table Attack", "Dictionary Attack"};
-	private static final int[] WIDTH_HEIGHT = {700, 500};
+	private static final int[] WIDTH_HEIGHT = {700, 800};
 
 	private RightPanel rightPanel;
 	private LeftPanel leftPanel;
@@ -134,13 +134,15 @@ public class AppView extends Frame implements GUI {
 		userInput.add(passwordLabel);
 		userInput.add(passwordInput);
 		userInput.add(calculateButton);
-		
+
 		JTextArea console = new JTextArea();
-		console.setBorder(BorderFactory.createLineBorder(AppView.BORDER_COLOR));
+		JScrollPane scroller = new JScrollPane(console);
+		scroller.setBorder(BorderFactory.createLineBorder(AppView.BORDER_COLOR));
+		scroller.setVisible(true);
 		console.setEditable(false);
 		console.setVisible(true);
-		userInput.add(console);
-		this.userPanelComponents = new UserPanelComponents(passwordInput, calculateButton, console);
+		userInput.add(scroller);
+		this.userPanelComponents = new UserPanelComponents(passwordInput, calculateButton, console, scroller);
 		
 		return userInput;
 	}
@@ -203,7 +205,7 @@ public class AppView extends Frame implements GUI {
 		temp.setLayout(new BoxLayout(temp, BoxLayout.PAGE_AXIS));
 		for (int i = 0; i < AppView.ATTACK_NAMES.length; i++) {
 			JPanel holdsOutcomesAndCountAndAdditional = new JPanel();
-			holdsOutcomesAndCountAndAdditional.setLayout(new GridLayout(3, 1));
+			holdsOutcomesAndCountAndAdditional.setLayout(new BoxLayout(holdsOutcomesAndCountAndAdditional, BoxLayout.PAGE_AXIS));
 			holdsOutcomesAndCountAndAdditional.setBorder(BorderFactory.createLineBorder(Color.green));
 			
 			JPanel holdsAttackAndOutcome = new JPanel(new FlowLayout(FlowLayout.LEFT));
@@ -213,17 +215,22 @@ public class AppView extends Frame implements GUI {
 			holdsAttackAndOutcome.add(attackLabels[i]);
 			holdsAttackAndOutcome.add(outcomeLabels[i]);
 			holdsOutcomesAndCountAndAdditional.add(holdsAttackAndOutcome);
-			
+
+			JPanel holdsGuess = new JPanel(new FlowLayout(FlowLayout.LEFT));
+			holdsGuess.setVisible(true);
 			JLabel attackGuess = new JLabel();
 			attackGuesses[i] = attackGuess;
-			attackGuess.setBorder(BorderFactory.createEmptyBorder(0, 5, 0, 0));
-			holdsOutcomesAndCountAndAdditional.add(attackGuess);
+			attackGuess.setAlignmentX(Component.LEFT_ALIGNMENT);
+			holdsGuess.add(attackGuess);
+			holdsOutcomesAndCountAndAdditional.add(holdsGuess);
 			
 			JTextArea additionalStat = new JTextArea();
 			additionalStat.setOpaque(false);
 			additionalStats[i] = additionalStat;
 			additionalStat.setBorder(BorderFactory.createEmptyBorder(0, 5, 0, 0));
 			additionalStat.setEditable(false);
+			additionalStat.setLineWrap(true);
+			additionalStat.setWrapStyleWord(true);
 			holdsOutcomesAndCountAndAdditional.add(additionalStat);
 			
 			temp.add(holdsOutcomesAndCountAndAdditional);
