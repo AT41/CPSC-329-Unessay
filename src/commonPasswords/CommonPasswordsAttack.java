@@ -50,9 +50,6 @@ public class CommonPasswordsAttack extends AttackAPI {
 					}
 					
 					if (toCompare.equals(this.password)) {
-						System.out.println("Got a match!");
-						System.out.println(this.currentLevenschteinDistance);
-						System.out.println(this.levenGuess);
 						this.attackSuccess = true;
 						return estimatedGuesses;
 					}
@@ -67,8 +64,8 @@ public class CommonPasswordsAttack extends AttackAPI {
 		}
 
 		this.attackSuccess = false;
-		System.out.println(this.currentLevenschteinDistance);
-		System.out.println(this.levenGuess);
+		this.model.updateAdditionalComments(this.attackType, "Though the attack failed, the minimum Levenschtein distance out of all the passwords was " + this.currentLevenschteinDistance 
+				+ ".\nThe closest match to the existing passwords is: " + this.levenGuess);
 		
 		return estimatedGuesses;
 	}

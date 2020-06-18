@@ -224,7 +224,7 @@ public class BruteForceAttack extends AttackAPI{
 
 		BigInteger speed = BigInteger.valueOf(100000);
 		BigInteger time = this.estimatedGuesses.divide(speed);
-		this.model.updateAdditionalComments(AttackType.BRUTE_FORCE, "It would take approximately " + time.toString() + "seconds \nto crack this password given a 100000 guesses/sec \nbrute-force attack");
+		this.model.updateAdditionalComments(AttackType.BRUTE_FORCE, "It would take approximately " + time.toString() + " seconds to crack this password given a 100000 guesses/sec brute-force attack");
 	}
 
 }
