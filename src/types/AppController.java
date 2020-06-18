@@ -2,6 +2,7 @@ package types;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.math.BigInteger;
 
 import javax.swing.JTextField;
 
@@ -47,6 +48,21 @@ public class AppController {
 		@Override
 		public void updateConsole(String message) {
 			this.view.printToGUIConsole(message);
+		}
+		@Override
+		public void setAttackGuesses(AttackType type, BigInteger guesses) {
+			// TODO Auto-generated method stub
+			this.view.setGuessesFor(type, guesses);
+		}
+		@Override
+		public void setTotalGuesses(BigInteger guesses) {
+			// TODO Auto-generated method stub
+			this.view.setTotalGuesses(guesses);
+		}
+		@Override
+		public void setAttackComments(AttackType type, String comments) {
+			// TODO Auto-generated method stub
+			this.view.setAdditionalCommentsFor(type, comments);
 		}
 	}
 	private GUI view;

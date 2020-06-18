@@ -7,6 +7,7 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.math.BigInteger;
 
+import types.AppModel;
 import types.AttackAPI;
 
 public class CommonPasswordsAttack extends AttackAPI {
@@ -15,11 +16,12 @@ public class CommonPasswordsAttack extends AttackAPI {
 	private String levenGuess = "";
 	
 	public static void main(String[] args) {
-		AttackAPI cpa = new CommonPasswordsAttack("fwefw");
+		//AttackAPI cpa = new CommonPasswordsAttack("fwefw");
 	}
 	
-	public CommonPasswordsAttack(String plaintextPassword) {
+	public CommonPasswordsAttack(String plaintextPassword, AppModel model) {
 		this.password = plaintextPassword;
+		this.model = model;
 	}
 	@Override
 	protected BigInteger calculateMetric() {
@@ -28,7 +30,7 @@ public class CommonPasswordsAttack extends AttackAPI {
 		String toCompare = "";
 		BigInteger estimatedGuesses = BigInteger.ZERO;
 		for (int i = 0; i < files.length; i++) {
-			System.out.println("Moved to new file: " + i);
+			this.model.callUpdateConsole("Moved to new file: " + i);
 			try {
 				br = new BufferedReader(new FileReader(files[i]));
 			

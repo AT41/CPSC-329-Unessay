@@ -10,11 +10,12 @@ public class RainbowTableAttack extends AttackAPI{
 	private static final String hashFileLocation = "src/types/hashFile/hashes.txt";
 	public String result;
 	
-	public RainbowTableAttack(String password) {
+	public RainbowTableAttack(String password, AppModel model) {
 		this.password = password;
 		this.attackSuccess = false;
 		this.cycleCounter = 0;
 		this.result = "";
+		this.model = model;
 	}
 	
 	
@@ -27,16 +28,18 @@ public class RainbowTableAttack extends AttackAPI{
 			String line = "";
 			File file = new File(hashFileLocation);
 			Scanner reader = new Scanner(file);
-			while (reader.hasNextLine()){
-				estimate = estimate.add(BigInteger.ONE);
-				line = reader.nextLine();
-				String[] lineSplit = line.split(":");
-				//System.out.println(lineSplit[0]);
-				if(lineSplit[0].equals(password)) {
-					this.attackSuccess = true;
-					this.result = lineSplit[1];
-					reader.close();
-					return estimate;
+			if(!password.equals(this.model.hashPassword(""))) {
+				while (reader.hasNextLine()){
+					estimate = estimate.add(BigInteger.ONE);
+					line = reader.nextLine();
+					String[] lineSplit = line.split(":");
+					//System.out.println(lineSplit[0]);
+					if(lineSplit[0].equals(password)) {
+						this.attackSuccess = true;
+						this.result = lineSplit[1];
+						reader.close();
+						return estimate;
+					}
 				}
 			}
 			reader.close();

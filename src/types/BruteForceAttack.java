@@ -4,12 +4,13 @@ import java.math.BigInteger;
 
 public class BruteForceAttack extends AttackAPI{
 
-	public BruteForceAttack(String password) {
+	public BruteForceAttack(String password, AppModel model) {
 		//this.hashedPassword = hashedPassword;
 		//this.plainTextPassword = plainTextPassword;
 		this.password = password;
 		this.attackSuccess = true;
 		this.cycleCounter = 0;
+		this.model = model;
 	}
 	
 	@Override

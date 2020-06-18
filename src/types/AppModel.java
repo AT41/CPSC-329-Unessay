@@ -22,6 +22,7 @@ public class AppModel {
 	BruteForceAttack bfAttack;
 	CommonPasswordsAttack cpAttack; 
 	RainbowTableAttack rpAttack;
+	DictionaryAttack dAttack;
 	
 	ArrayList<AttackListener> controllerListener;
 	
@@ -81,18 +82,30 @@ public class AppModel {
 	}
 	
 	public void runAlgorithms() {	
-		this.bfAttack = new BruteForceAttack(plainTextPassword);
+		this.bfAttack = new BruteForceAttack(plainTextPassword,this);
 		this.bfAttack.run();
 		finishedAttackEvent(AttackType.BRUTE_FORCE,this.bfAttack.attackSuccess ? AttackStatus.POSSIBLE : AttackStatus.IMPOSSIBLE);
-		callUpdateConsole("Estimated Number of guesses for bruteforce: " + this.bfAttack.estimatedGuesses.toString());
+		updateAttackGuesses(AttackType.BRUTE_FORCE,bfAttack.estimatedGuesses);
+		//A regular computer would likely make about 100,000 guesses per second. 
+		//https://www.expressvpn.com/blog/how-attackers-brute-force-password/#:~:text=How%20quickly%20an%20attacker%20can,about%20100%2C000%20guesses%20per%20second.
+		BigInteger speed = BigInteger.valueOf(100000);
+		BigInteger time = speed.divide(this.bfAttack.estimatedGuesses);
+		updateAdditionalComments(AttackType.BRUTE_FORCE, "It would take approximately " + time.toString() + "seconds \nto crack this password given a 100000 guesses/sec \nbrute-force attack");
+		//callUpdateConsole("Estimated Number of guesses for bruteforce: " + this.bfAttack.estimatedGuesses.toString());
+		//callUpdateConsole("TESTING TESTING 123");
 		
-		this.cpAttack = new CommonPasswordsAttack(plainTextPassword);
+		this.cpAttack = new CommonPasswordsAttack(plainTextPassword,this);
 		this.cpAttack.run();
 		finishedAttackEvent(AttackType.COMMON_PASSWORDS, this.cpAttack.attackSuccess ? AttackStatus.POSSIBLE : AttackStatus.IMPOSSIBLE);
 		
-		this.rpAttack = new RainbowTableAttack(hashedPassword);
+		this.rpAttack = new RainbowTableAttack(hashedPassword,this);
 		this.rpAttack.run();
 		finishedAttackEvent(AttackType.RAINBOW_TABLE,this.rpAttack.attackSuccess ? AttackStatus.POSSIBLE : AttackStatus.IMPOSSIBLE);
+		
+		
+		this.dAttack = new DictionaryAttack(plainTextPassword,this);
+		this.dAttack.run();
+		finishedAttackEvent(AttackType.DICTIONARY, this.dAttack.attackSuccess ? AttackStatus.POSSIBLE : AttackStatus.IMPOSSIBLE);
 	}
 	
 	public void finishedAttackEvent(AttackType type, AttackStatus status) {
@@ -104,6 +117,21 @@ public class AppModel {
 	public void callUpdateConsole(String message) {
 		for(AttackListener al : this.controllerListener) {
 			al.updateConsole(message);
+		}
+	}
+	public void updateAdditionalComments(AttackType type, String comments) {
+		for(AttackListener al : this.controllerListener) {
+			al.setAttackComments(type, comments);
+		}
+	}
+	public void updateAttackGuesses(AttackType type, BigInteger guesses) {
+		for(AttackListener al : this.controllerListener) {
+			al.setAttackGuesses(type, guesses);
+		}
+	}
+	public void updateTotalGuesses(BigInteger guesses) {
+		for(AttackListener al : this.controllerListener) {
+			al.setTotalGuesses(guesses);
 		}
 	}
 	
