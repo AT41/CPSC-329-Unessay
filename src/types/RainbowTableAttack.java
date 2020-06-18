@@ -21,7 +21,6 @@ public class RainbowTableAttack extends AttackAPI{
 		this.cycleCounter = 0;
 		this.result = "";
 		this.model = model;
-		this.hashtable = constructHashTable();
 	}
 	
 	
@@ -49,6 +48,7 @@ public class RainbowTableAttack extends AttackAPI{
 	@Override
 	protected BigInteger calculateMetric() {
 		// TODO Auto-generated method stub
+		this.hashtable = constructHashTable();
 		BigInteger estimate = BigInteger.ONE;
 		String result = hashtable.get(this.password);
 		if(result != null) {
