@@ -1,0 +1,13 @@
+Three types of threads:
+Initial: threads that run at the start
+Event Dispatch: All event handling code is executed here. Most code interacting with Swing also executes here
+Worker: Background tasks executed
+
+INITIAL:
+For swing, the initial thread should just create a runnable object initializing the GUI and scheduling execution for the GUI on the event threads.
+How to create GUI: Use javax.swing.SwingUtilities.invokeLater or javax.swing.SwingUtilities.invokeAndWait. For non-applets (not connecting to the web), both can be used. 
+
+EVENT DISPATCH:
+For "thread-safe" Swing methods, you can invoke these methods in any thread, but for non-thread-safe methods they can only be invoked in event thread.
+Quick way to see if you're on the event thread: invoke javax.swing.SwingUtilities.isEventDispatchThread.
+
