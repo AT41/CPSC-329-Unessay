@@ -27,6 +27,7 @@ public class DictionaryAttack extends AttackAPI{
 	protected BigInteger calculateMetric() {
 		// TODO Auto-generated method stub
 				BigInteger estimate = BigInteger.ZERO;
+				BigInteger separators = BigInteger.ONE;
 				try{
 					File file = new File(dictionaryFileLocation);
 					
@@ -36,9 +37,19 @@ public class DictionaryAttack extends AttackAPI{
 						String lastTry = password;
 						String originalpassword = password;
 						String longestguess = "";
-						int lastIndex = 0;
 						String line = "";
 						Scanner reader = new Scanner(file);
+						
+						if (password.charAt(0) == '_' || password.charAt(0) == ' ') {
+							password = password.substring(1, password.length());
+							separators = separators.multiply(BigInteger.TWO);
+						}
+						
+						if (Character.isUpperCase(password.charAt(0))) {
+							separators = separators.multiply(BigInteger.TWO);
+							//System.out.println("Uppercase: " + password);
+							password = password.substring(0, 1).toLowerCase() + password.substring(1);
+						}
 						
 						while (reader.hasNextLine()) {
 							if (password.equals(longestguess)) {
@@ -47,9 +58,12 @@ public class DictionaryAttack extends AttackAPI{
 							estimate = estimate.add(BigInteger.ONE);
 							line = reader.nextLine();
 							line = line.toLowerCase();
+							
+							
 							if (line.length() < 3) {
 								continue;
 							}
+
 							
 							// Start checking when the first character matches
 							if (password.charAt(0) == (line.charAt(0))) {
@@ -67,7 +81,7 @@ public class DictionaryAttack extends AttackAPI{
 										break;
 									}
 								}
-							}
+							} 
 						}
 						
 						// Remove word if found
@@ -79,6 +93,8 @@ public class DictionaryAttack extends AttackAPI{
 						System.out.println("Word removed, new PW: " + password);
 						//System.out.println("Last try: " + lastTry);
 						if (password.length() == 0) {
+							//System.out.println("Sep: " + separators.toString());
+							estimate = estimate.multiply(separators);
 							this.model.updateAdditionalComments(AttackType.DICTIONARY, "English dictionary words found: " + wordsFound.toString());
 							this.attackSuccess = true;
 							this.result = line;
