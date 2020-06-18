@@ -27,6 +27,7 @@ class LeftPanel {
 		
 		"The dictionary attack is a more efficient type of brute force attack which instead systematically enters dictionary words, as well as combinations of several words. This attack has many limitations, such as case sensitivity, misspellings, and numbers of other non-alphabetic characters."
 		+ "\n\nWe use a list of 216,557 English words. Each time another dictionary word is compounded, the number of guesses needed is squared, as the attack would need to try every multiple word combination, since the previous words wouldn't be realistically known."
+		+ "\n\nThis attack also accounts for common practices such as the first letter of the word being capitalized, or the words being separated by spaces or underscores. In this case, the number of guesses "
 	};
 	
 	public LeftPanel(JPanel panel, JLabel[] allLabels, JButton[] infoButtons, JTextArea infoDisplay) {
