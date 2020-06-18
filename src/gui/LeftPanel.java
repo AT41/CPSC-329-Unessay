@@ -20,7 +20,8 @@ class LeftPanel {
 		"The common passwords attack takes a list of close to 1 million commonly entered passwords and tests each of them to see if any pass. If any of them pass, the program will show how the existing password ranks in popularity."
 		+ "\n\nAdditionally, our algorithm calculates the minimum Levenschtein distance between your entered password and each of the passwords in our database, as a measurement of how close your password could be to an existing password. "
 		+ "Levenschtein distance is a measurement of the minimum amounts of edits (insertion, deletion, or character swap) it takes to turn one string into another. "
-		+ "\n\nWe felt it appropriate to add this to our algorithm, as a brute force attack modifying existing passwords in a common passwords database can break your password easily.",
+		+ "\n\nWe felt it appropriate to add this to our algorithm, as a brute force attack modifying existing passwords in a common passwords database can break your password easily."
+		+ "\n\nAlthough our algorithm will iterate through all the passwords we have stored in order to calculate the Levenschtein distance and the rank of the popularity of the password, a closer to life implementation would be to pre-hash these common passwords and combine them with an existing rainbow table, though all competent databases pre-salt user passwords to foil rainbow table attacks.",
 		
 		"The rainbow table attack takes a list of solved md5 hashes and compares them to the md5 hash of the user's password to see if there are any matches.",
 		
