@@ -2,11 +2,12 @@ package types;
 
 import java.math.BigInteger;
 
+import gui.AppView.AttackType;
+
 public class BruteForceAttack extends AttackAPI{
 
 	public BruteForceAttack(String password, AppModel model) {
-		//this.hashedPassword = hashedPassword;
-		//this.plainTextPassword = plainTextPassword;
+		this.attackType = AttackType.BRUTE_FORCE;
 		this.password = password;
 		this.attackSuccess = true;
 		this.cycleCounter = 0;
@@ -43,7 +44,15 @@ public class BruteForceAttack extends AttackAPI{
 		return estimate;
 	}
 
+	@Override
+	protected void done() {
+		//A regular computer would likely make about 100,000 guesses per second. 
+		//https://www.expressvpn.com/blog/how-attackers-brute-force-password/#:~:text=How%20quickly%20an%20attacker%20can,about%20100%2C000%20guesses%20per%20second.
 
+		BigInteger speed = BigInteger.valueOf(100000);
+		BigInteger time = speed.divide(this.estimatedGuesses);
+		this.model.updateAdditionalComments(AttackType.BRUTE_FORCE, "It would take approximately " + time.toString() + "seconds \nto crack this password given a 100000 guesses/sec \nbrute-force attack");
+	}
 
 
 }

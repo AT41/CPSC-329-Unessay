@@ -13,6 +13,15 @@ Quick way to see if you're on the event thread: invoke javax.swing.SwingUtilitie
 
 WORKER:
 Created using SwingWorker classes. Provides a way to return values when finished, as well as provide intermediate results (which get processed in event threads)
+SwingWorker:
+protected doInBackground(): main logic, returns final output
+protected done(): called when doInBackground() finishes, use get() to get the value from doInBackground(), updates can be made to GUI here (therefore this method is executed in event dispatch)
+public execute(): Executes this thread
+protected publish(): Sends intermediate results
+protected process(): Receives data chunks from publish(). These values from publish() get congregated, then this method gets called for you to update the gui
+public run(): Sets java.util.concurrent.Future to result of doInBackground(). No idea what that means
+protected setProgress()/public getProgress(): For loading bars
+
 
 TODO ANTHONY We can consider making new SwingWorker classes for all our different attacks, but I don't think that solves our current issue since all our things are processed in the event thread already.
 

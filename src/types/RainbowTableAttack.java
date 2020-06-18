@@ -5,12 +5,15 @@ import java.io.FileNotFoundException;
 import java.math.BigInteger;
 import java.util.Scanner;
 
+import gui.AppView.AttackType;
+
 public class RainbowTableAttack extends AttackAPI{
 	
 	private static final String hashFileLocation = "src/types/hashFile/hashes.txt";
 	public String result;
 	
 	public RainbowTableAttack(String password, AppModel model) {
+		this.attackType = AttackType.RAINBOW_TABLE;
 		this.password = password;
 		this.attackSuccess = false;
 		this.cycleCounter = 0;
