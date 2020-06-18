@@ -11,47 +11,47 @@ import gui.AppView.AttackType;
 import commonPasswords.CommonPasswordsAttack;
 
 public class AppModel {
-	
+
 	// Stores the hashed password, used to verify guesses
 	String hashedPassword;
 
 	// Stores the plain text password, used to calculate time metrics
 	String plainTextPassword;
-	
+
 	// model stores instance of the attack so it can call it's functions
 	BruteForceAttack bfAttack;
-	CommonPasswordsAttack cpAttack; 
+	CommonPasswordsAttack cpAttack;
 	RainbowTableAttack rpAttack;
 	DictionaryAttack dAttack;
-	
+
 	ArrayList<AttackListener> controllerListener;
-	
+
 	// constructor
 	public AppModel(){
-		this.hashedPassword = "";	
+		this.hashedPassword = "";
 		this.plainTextPassword = "";
 		controllerListener = new ArrayList<AttackListener>();
 	}
-	
+
 	public String getHashedPassword() {
 		return this.hashedPassword;
 	}
-	
+
 	public void setHashedPassword(String plainTextPass) {
 		this.hashedPassword = hashPassword(plainTextPass);
 	}
 	public String getPlainTextPassword() {
 		return this.plainTextPassword;
 	}
-	
+
 	public void setPlainTextPassword(String plainTextPass) {
 		this.plainTextPassword = plainTextPass;
 	}
-	
+
 	public void addAttackListener(AttackListener updatesAttackStatus) {
 		controllerListener.add(updatesAttackStatus);
 	}
-	
+
 	/**
 	 * Hashing algorithm is to be implemented in the model
 	 * https://www.baeldung.com/java-md5 using MessageDigest class
@@ -77,43 +77,31 @@ public class AppModel {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		
+
 		return hash;
 	}
-	
-	public void runAlgorithms() {	
+
+	public void runAlgorithms() {
 		this.bfAttack = new BruteForceAttack(plainTextPassword,this);
-		this.bfAttack.run();
-		finishedAttackEvent(AttackType.BRUTE_FORCE,this.bfAttack.attackSuccess ? AttackStatus.POSSIBLE : AttackStatus.IMPOSSIBLE);
-		updateAttackGuesses(AttackType.BRUTE_FORCE,bfAttack.estimatedGuesses);
-		//A regular computer would likely make about 100,000 guesses per second. 
-		//https://www.expressvpn.com/blog/how-attackers-brute-force-password/#:~:text=How%20quickly%20an%20attacker%20can,about%20100%2C000%20guesses%20per%20second.
-		BigInteger speed = BigInteger.valueOf(100000);
-		BigInteger time = this.bfAttack.estimatedGuesses.divide(speed);
-		updateAdditionalComments(AttackType.BRUTE_FORCE, "It would take approximately " + time.toString() + "seconds \nto crack this password given a 100000 guesses/sec \nbrute-force attack");
-		//callUpdateConsole("Estimated Number of guesses for bruteforce: " + this.bfAttack.estimatedGuesses.toString());
-		//callUpdateConsole("TESTING TESTING 123");
-		
+		this.bfAttack.execute();
+
 		this.cpAttack = new CommonPasswordsAttack(plainTextPassword,this);
-		this.cpAttack.run();
-		finishedAttackEvent(AttackType.COMMON_PASSWORDS, this.cpAttack.attackSuccess ? AttackStatus.POSSIBLE : AttackStatus.IMPOSSIBLE);
-		
+		this.cpAttack.execute();
+
 		this.rpAttack = new RainbowTableAttack(hashedPassword,this);
-		this.rpAttack.run();
-		finishedAttackEvent(AttackType.RAINBOW_TABLE,this.rpAttack.attackSuccess ? AttackStatus.POSSIBLE : AttackStatus.IMPOSSIBLE);
-		
-		
+		this.rpAttack.execute();
+
+
 		this.dAttack = new DictionaryAttack(plainTextPassword,this);
-		this.dAttack.run();
-		finishedAttackEvent(AttackType.DICTIONARY, this.dAttack.attackSuccess ? AttackStatus.POSSIBLE : AttackStatus.IMPOSSIBLE);
+		this.dAttack.execute();
 	}
-	
+
 	public void finishedAttackEvent(AttackType type, AttackStatus status) {
 		for(AttackListener al : this.controllerListener) {
 			al.attackComplete(type, status);
 		}
 	}
-	
+
 	public void callUpdateConsole(String message) {
 		for(AttackListener al : this.controllerListener) {
 			al.updateConsole(message);
@@ -134,7 +122,7 @@ public class AppModel {
 			al.setTotalGuesses(guesses);
 		}
 	}
-	
-	
-	
+
+
+
 }

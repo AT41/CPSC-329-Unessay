@@ -6,7 +6,9 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.math.BigInteger;
+import java.util.List;
 
+import gui.AppView.AttackType;
 import types.AppModel;
 import types.AttackAPI;
 
@@ -15,14 +17,12 @@ public class CommonPasswordsAttack extends AttackAPI {
 	private int currentLevenschteinDistance = Integer.MAX_VALUE;
 	private String levenGuess = "";
 	
-	public static void main(String[] args) {
-		//AttackAPI cpa = new CommonPasswordsAttack("fwefw");
-	}
-	
 	public CommonPasswordsAttack(String plaintextPassword, AppModel model) {
+		this.attackType = AttackType.COMMON_PASSWORDS;
 		this.password = plaintextPassword;
 		this.model = model;
 	}
+	
 	@Override
 	protected BigInteger calculateMetric() {
 		File[] files = new File(allPasswords).listFiles();
@@ -103,5 +103,4 @@ public class CommonPasswordsAttack extends AttackAPI {
 			return ans;
 		}
 	}
-
 }

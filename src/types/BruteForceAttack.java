@@ -2,6 +2,8 @@ package types;
 
 import java.math.BigInteger;
 
+import gui.AppView.AttackType;
+
 public class BruteForceAttack extends AttackAPI{
 
 	private static enum Range{
@@ -11,9 +13,9 @@ public class BruteForceAttack extends AttackAPI{
 		NUMERIC,
 		ALPHA_NUMERIC,
 		LOWER_ALPHA_NUMERIC,
-		MIX_ALPHA_NUMERIC		
+		MIX_ALPHA_NUMERIC
 	}
-	
+
 	BigInteger alpha;
 	BigInteger lower_alpha;
 	BigInteger mix_alpha;
@@ -21,10 +23,9 @@ public class BruteForceAttack extends AttackAPI{
 	BigInteger alpha_numeric;
 	BigInteger lower_alpha_numeric;
 	BigInteger mix_alpha_numeric;
-	
+
 	public BruteForceAttack(String password, AppModel model) {
-		//this.hashedPassword = hashedPassword;
-		//this.plainTextPassword = plainTextPassword;
+		this.attackType = AttackType.BRUTE_FORCE;
 		this.password = password;
 		this.attackSuccess = true;
 		this.cycleCounter = 0;
@@ -37,7 +38,7 @@ public class BruteForceAttack extends AttackAPI{
 		this.lower_alpha_numeric = otherCalc(Range.LOWER_ALPHA_NUMERIC,((122-96)+(57-46)));
 		this.mix_alpha_numeric = otherCalc(Range.MIX_ALPHA_NUMERIC,((122-96)+(57-46)+(90-64)));
 	}
-	
+
 	@Override
 	public BigInteger calculateMetric() {
 		// TODO Auto-generated method stub
@@ -48,7 +49,7 @@ public class BruteForceAttack extends AttackAPI{
 		for(int x = 0; x < passLen; x++) {
 			asciiValues[x] = passChars[x] - 32;
 		}
-		
+
 		int numOfAllowedChars = 126 - 31; // from SPACE (32) to ~ on ascii table (126) ;
 		//System.out.println(estimate);
 		// num of guesses it took to reach current length of string
@@ -96,7 +97,7 @@ public class BruteForceAttack extends AttackAPI{
 		System.out.println(range.toString() +" final: " + estimate);
 		return estimate;
 	}
-	
+
 	public boolean rangeCheck(Range range, char[] passChars) {
 		boolean verify = true;
 		int passLen = passChars.length;
