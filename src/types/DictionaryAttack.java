@@ -3,6 +3,8 @@ package types;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.math.BigInteger;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Scanner;
 
 import gui.AppView.AttackType;
@@ -11,6 +13,7 @@ public class DictionaryAttack extends AttackAPI{
 
 	private static final String dictionaryFileLocation = "src/types/dictionaryFile/words2.txt";
 	public String result;
+	public List<String> wordsFound = new ArrayList<String>();
 	
 	public DictionaryAttack(String password, AppModel model) {
 		this.attackType = AttackType.DICTIONARY;
@@ -70,18 +73,26 @@ public class DictionaryAttack extends AttackAPI{
 						// Remove word if found
 						password = password.substring(longestguess.length(), password.length());
 						System.out.println("WORD FOUND: " + longestguess);
+						if (longestguess.length() > 0) {
+							wordsFound.add(longestguess);
+						}
 						System.out.println("Word removed, new PW: " + password);
 						//System.out.println("Last try: " + lastTry);
 						if (password.length() == 0) {
+							this.model.updateAdditionalComments(AttackType.DICTIONARY, "English dictionary words found: " + wordsFound.toString());
 							this.attackSuccess = true;
 							this.result = line;
 							reader.close();
 							return estimate;
+							
 						} else if (lastTry == password) {
+							this.model.updateAdditionalComments(AttackType.DICTIONARY, "English dictionary words found: " + wordsFound.toString());
 							reader.close();
 							this.attackSuccess = false;
 							return estimate;
 							
+						} else {
+							estimate = estimate.pow(2);
 						}
 					}
 						

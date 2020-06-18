@@ -23,7 +23,9 @@ class LeftPanel {
 		+ "\n\nWe felt it appropriate to add this to our algorithm, as a brute force attack modifying existing passwords in a common passwords database can break your password easily.",
 		
 		"The rainbow table attack takes a list of solved md5 hashes and compares them to the md5 hash of the user's password to see if there are any matches.",
-		"dictionaryInfoHere"
+		
+		"The dictionary attack is a more efficient type of brute force attack which instead systematically enters dictionary words, as well as combinations of several words. This attack has many limitations, such as case sensitivity, misspellings, and numbers of other non-alphabetic characters."
+		+ "\n\nWe use a list of 216,557 English words. Each time another dictionary word is compounded, the number of guesses needed is squared, as the attack would need to try every multiple word combination, since the previous words wouldn't be realistically known."
 	};
 	
 	public LeftPanel(JPanel panel, JLabel[] allLabels, JButton[] infoButtons, JTextArea infoDisplay) {
