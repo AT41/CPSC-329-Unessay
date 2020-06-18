@@ -9,7 +9,7 @@ import gui.AppView.AttackType;
 
 public class DictionaryAttack extends AttackAPI{
 
-	private static final String dictionaryFileLocation = "src/types/dictionaryFile/words.txt";
+	private static final String dictionaryFileLocation = "src/types/dictionaryFile/words2.txt";
 	public String result;
 	
 	public DictionaryAttack(String password, AppModel model) {
@@ -43,6 +43,7 @@ public class DictionaryAttack extends AttackAPI{
 							}
 							estimate = estimate.add(BigInteger.ONE);
 							line = reader.nextLine();
+							line = line.toLowerCase();
 							if (line.length() < 3) {
 								continue;
 							}
