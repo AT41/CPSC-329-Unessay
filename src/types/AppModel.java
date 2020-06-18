@@ -87,11 +87,11 @@ public class AppModel {
 
 		this.cpAttack = new CommonPasswordsAttack(plainTextPassword,this);
 		this.cpAttack.execute();
-
+		
 		this.rpAttack = new RainbowTableAttack(hashedPassword,this);
 		this.rpAttack.execute();
 
-
+		
 		this.dAttack = new DictionaryAttack(plainTextPassword,this);
 		this.dAttack.execute();
 	}
