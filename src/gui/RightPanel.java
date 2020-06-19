@@ -1,7 +1,12 @@
 package gui;
 
 import java.awt.Color;
+import java.math.BigDecimal;
 import java.math.BigInteger;
+import java.text.DecimalFormat;
+import java.text.DecimalFormatSymbols;
+import java.text.NumberFormat;
+import java.util.Locale;
 
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -27,10 +32,7 @@ class RightPanel {
 		this.attackGuesses = attackGuesses;
 		this.additionalStats = additionalStats;
 		
-		for (int i = 0; i < attackGuesses.length; i++) {
-			this.attackGuesses[i].setText(attackGuessesText);
-			this.additionalStats[i].setText(additionalStatText);
-		}
+		this.resetView();
 	}
 	
 	public void changeLabelStatus(int labelIndex, AttackStatus status) {
@@ -39,15 +41,23 @@ class RightPanel {
 	}
 	
 	public void setTotalGuesses(BigInteger totalGuesses) {
-		this.overallGuesses.setText(totalGuesses.toString());
+	    NumberFormat formatter = new DecimalFormat("0.######E0", DecimalFormatSymbols.getInstance(Locale.ROOT));
+		this.overallGuesses.setText(formatter.format(totalGuesses));
 	}
 	
-	// If digits are too large, consider scientific notation
 	public void setGuessesFor(AttackType type, BigInteger guesses) {
-		this.attackGuesses[type.ordinal()].setText(attackGuessesText + guesses.toString());
+	    NumberFormat formatter = new DecimalFormat("0.######E0", DecimalFormatSymbols.getInstance(Locale.ROOT));
+	    this.attackGuesses[type.ordinal()].setText(attackGuessesText + formatter.format(guesses));
 	};
 	
 	public void setAdditionalStat(AttackType type, String info) {
 		this.additionalStats[type.ordinal()].setText(additionalStatText + info);
+	}
+	
+	public void resetView() {
+		for (int i = 0; i < attackGuesses.length; i++) {
+			this.attackGuesses[i].setText(attackGuessesText);
+			this.additionalStats[i].setText(additionalStatText);
+		}
 	}
 }

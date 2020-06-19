@@ -22,6 +22,7 @@ import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
@@ -54,6 +55,10 @@ public class AppView extends Frame implements GUI {
 	public void addListenerForButton(ActionListener returnsPlaintextPassword) {
 		this.userPanelComponents.calculateButton.addActionListener(e -> {
 			returnsPlaintextPassword.actionPerformed(new ActionEvent(this.userPanelComponents.passwordInput, 0, ""));
+			
+			// TODO Move this all when totalGuesses have been implemented
+			Frame test = new FinalView(null, null);
+			test.setVisible(true);
 		});
 	}
 	@Override
@@ -79,6 +84,12 @@ public class AppView extends Frame implements GUI {
 	@Override
 	public void setAdditionalCommentsFor(AttackType type, String comments) {
 		this.rightPanel.setAdditionalStat(type, comments);
+	}
+	
+	@Override
+	public void resetView() {
+		this.userPanelComponents.resetView();
+		this.rightPanel.resetView();
 	}
 	
 	public AppView() {

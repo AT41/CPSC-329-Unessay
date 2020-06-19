@@ -22,11 +22,19 @@ class UserPanelComponents {
 			this.consoleText.setText(this.consoleText.getText() + "\n" + text);
 			this.scroller.getVerticalScrollBar().setValue(this.scroller.getVerticalScrollBar().getMaximum());
 		}
+		
+		public void resetConsole() {
+			this.consoleText.setText("");
+		}
 	}
 	
 	public UserPanelComponents(JTextField passwordInput, JButton calculateButton, JTextArea consoleText, JScrollPane scroller) {
 		this.passwordInput = passwordInput;
 		this.calculateButton = calculateButton;
 		this.console = new Console(consoleText, scroller);
+	}
+	
+	public void resetView() {
+		this.console.resetConsole();
 	}
 }

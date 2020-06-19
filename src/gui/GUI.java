@@ -28,6 +28,8 @@ public interface GUI {
 	
 	public void setAdditionalCommentsFor(AttackType type, String comments);
 	
+	public void resetView();
+	
 	/**
 	 * Prints to console in center
 	 * @param text
