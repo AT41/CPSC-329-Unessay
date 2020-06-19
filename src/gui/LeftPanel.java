@@ -16,7 +16,7 @@ class LeftPanel {
 		"The brute force attack makes the basic assumption that all passwords are crackable using this method given enough time and space. Our brute force calculation calculates approximately how many guesses it would take to crack the given password of length k."
 		+ "\n\nThe way this number is calculated is by adding two numbers. The first number 'a' is a summation of p^i where p is the number of possible characters in the password and where 1<=i<k. This number represents each possible password of length"
 		+ " 1<=i<k. \n\nThe second number 'b', is the number of possible passwords of length k, such that each if each password 'x' of length k was converted to a base p number and the user's password 'u' was also converted to a base p number, then b=u-1. \n\nThus our estimate is a+b. "
-		+"\n\nThe brute force attack can be resitricted to different character ranges which can potentially save a lot of time. They are listed in the additional information section for the brute force algorithm.",
+		+"\n\nThe brute force attack can be restricted to different character ranges which can potentially save a lot of time. They are listed in the additional information section for the brute force algorithm.",
 		
 		"The common passwords attack takes a list of close to 1 million commonly entered passwords and tests each of them to see if any pass. If any of them pass, the program will show how the existing password ranks in popularity."
 		+ "\n\nAdditionally, our algorithm calculates the minimum Levenschtein distance between your entered password and each of the passwords in our database, as a measurement of how close your password could be to an existing password. "
