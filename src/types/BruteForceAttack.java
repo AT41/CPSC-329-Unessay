@@ -225,13 +225,13 @@ public class BruteForceAttack extends AttackAPI{
 	protected void done() {
 		NumberFormat formatter = new DecimalFormat("0.######E0", DecimalFormatSymbols.getInstance(Locale.ROOT));
 
-		this.model.updateAdditionalComments(AttackType.BRUTE_FORCE, "Alpha(A-Z) \n: "+ (alpha.equals(BigInteger.ONE.negate())? "Failed" : formatter.format(alpha))
-		+ "\nLowerAlpha(a-z): \n"+ (lower_alpha.equals(BigInteger.ONE.negate())? "Failed" : formatter.format(lower_alpha))
-		+ "\nMixAlpha(A-Za-z): \n"+ (mix_alpha.equals(BigInteger.ONE.negate())? "Failed" : formatter.format(mix_alpha))
-		+ "\nNumeric(0-9): \n"+ (numeric.equals(BigInteger.ONE.negate())? "Failed" : formatter.format(numeric))
-		+ "\nAlphaNumeric(0-9A-Z): \n"+ (alpha_numeric.equals(BigInteger.ONE.negate())? "Failed" : formatter.format(alpha_numeric))
-		+ "\nLowerAlphaNumeric(0-9a-z) \n: "+ (lower_alpha_numeric.equals(BigInteger.ONE.negate())? "Failed" : formatter.format(lower_alpha_numeric))
-		+ "\nMixAlphaNumeric(0-9A-Za-z) \n: "+ (mix_alpha_numeric.equals(BigInteger.ONE.negate())? "Failed" : formatter.format( mix_alpha_numeric)));
+		this.model.updateAdditionalComments(AttackType.BRUTE_FORCE, "(A-Z) : "+ (alpha.equals(BigInteger.ONE.negate())? "Failed" : formatter.format(alpha))
+		+ "\n(a-z): "+ (lower_alpha.equals(BigInteger.ONE.negate())? "Failed" : formatter.format(lower_alpha))
+		+ "\n(A-Za-z): "+ (mix_alpha.equals(BigInteger.ONE.negate())? "Failed" : formatter.format(mix_alpha))
+		+ "\n(0-9): "+ (numeric.equals(BigInteger.ONE.negate())? "Failed" : formatter.format(numeric))
+		+ "\n(0-9A-Z): "+ (alpha_numeric.equals(BigInteger.ONE.negate())? "Failed" : formatter.format(alpha_numeric))
+		+ "\n(0-9a-z) : "+ (lower_alpha_numeric.equals(BigInteger.ONE.negate())? "Failed" : formatter.format(lower_alpha_numeric))
+		+ "\n(0-9A-Za-z) : "+ (mix_alpha_numeric.equals(BigInteger.ONE.negate())? "Failed" : formatter.format( mix_alpha_numeric)));
 
 		
 		this.model.resultInfo.put("BruteForceAttack All chars Result", this.estimatedGuesses);
