@@ -34,6 +34,7 @@ public abstract class AttackAPI extends SwingWorker {
 
 	@Override
 	protected Object doInBackground() throws Exception {
+		this.model.callUpdateConsole("Starting " + this.attackType.toString() +" Attack");
 		this.estimatedGuesses = calculateMetric();
 		this.model.finishedAttackEvent(this.attackType, attackSuccess ? AttackStatus.POSSIBLE : AttackStatus.IMPOSSIBLE);
 		this.model.updateAttackGuesses(this.attackType, estimatedGuesses);
