@@ -232,15 +232,17 @@ public class BruteForceAttack extends AttackAPI{
 		+ "\n\nAlphaNumeric(0-9A-Z): \n"+ (alpha_numeric.equals(BigInteger.ONE.negate())? "Failed" : formatter.format(alpha_numeric))
 		+ "\n\nLowerAlphaNumeric(0-9a-z) \n: "+ (lower_alpha_numeric.equals(BigInteger.ONE.negate())? "Failed" : formatter.format(lower_alpha_numeric))
 		+ "\n\nMixAlphaNumeric(0-9A-Za-z) \n: "+ (mix_alpha_numeric.equals(BigInteger.ONE.negate())? "Failed" : formatter.format( mix_alpha_numeric)));
+
 		
-		this.model.results[0] = this.estimatedGuesses;
-		this.model.results[1] = this.alpha;
-		this.model.results[2] = this.lower_alpha;
-		this.model.results[3] = this.mix_alpha;
-		this.model.results[4] = this.numeric;
-		this.model.results[5] = this.alpha_numeric;
-		this.model.results[6] = this.lower_alpha_numeric;
-		this.model.results[7] = this.mix_alpha_numeric;
+		this.model.resultInfo.put("BruteForceAttack All chars Result", this.estimatedGuesses);
+		this.model.resultInfo.put("BruteForceAttack alpha Result", this.alpha);
+		this.model.resultInfo.put("BruteForceAttack lower_alpha Result", this.lower_alpha);
+		this.model.resultInfo.put("BruteForceAttack mix_alpha Result", this.mix_alpha);
+		this.model.resultInfo.put("BruteForceAttack numeric Result", this.numeric);
+		this.model.resultInfo.put("BruteForceAttack alpha_numeric Result", this.alpha_numeric);
+		this.model.resultInfo.put("BruteForceAttack lower_alpha_numeric Result", this.lower_alpha_numeric);
+		this.model.resultInfo.put("BruteForceAttack mix_alpha_numeric Result", this.mix_alpha_numeric);
+		
 	}
 
 }
