@@ -1,6 +1,10 @@
 package types;
 
 import java.math.BigInteger;
+import java.text.DecimalFormat;
+import java.text.DecimalFormatSymbols;
+import java.text.NumberFormat;
+import java.util.Locale;
 
 import gui.AppView.AttackType;
 
@@ -16,13 +20,13 @@ public class BruteForceAttack extends AttackAPI{
 		MIX_ALPHA_NUMERIC
 	}
 
-	BigInteger alpha;
-	BigInteger lower_alpha;
-	BigInteger mix_alpha;
-	BigInteger numeric;
-	BigInteger alpha_numeric;
-	BigInteger lower_alpha_numeric;
-	BigInteger mix_alpha_numeric;
+	private BigInteger alpha;
+	private BigInteger lower_alpha;
+	private BigInteger mix_alpha;
+	private BigInteger numeric;
+	private BigInteger alpha_numeric;
+	private BigInteger lower_alpha_numeric;
+	private BigInteger mix_alpha_numeric;
 
 	public BruteForceAttack(String password, AppModel model) {
 		this.attackType = AttackType.BRUTE_FORCE;
@@ -30,6 +34,11 @@ public class BruteForceAttack extends AttackAPI{
 		this.attackSuccess = true;
 		this.cycleCounter = 0;
 		this.model = model;
+	}
+
+	@Override
+	public BigInteger calculateMetric() {
+		// TODO Auto-generated method stub
 		this.alpha = otherCalc(Range.ALPHA,(90-64));
 		this.lower_alpha = otherCalc(Range.LOWER_ALPHA,(122-96));
 		this.mix_alpha = otherCalc(Range.MIX_ALPHA,((90-64)+(122-96)));
@@ -37,11 +46,6 @@ public class BruteForceAttack extends AttackAPI{
 		this.alpha_numeric = otherCalc(Range.ALPHA_NUMERIC,((90-64)+(57-47)));
 		this.lower_alpha_numeric = otherCalc(Range.LOWER_ALPHA_NUMERIC,((122-96)+(57-47)));
 		this.mix_alpha_numeric = otherCalc(Range.MIX_ALPHA_NUMERIC,((122-96)+(57-47)+(90-64)));
-	}
-
-	@Override
-	public BigInteger calculateMetric() {
-		// TODO Auto-generated method stub
 		BigInteger estimate = BigInteger.valueOf(0);
 		char[] passChars = this.password.toCharArray();
 		int passLen = passChars.length;
@@ -75,7 +79,7 @@ public class BruteForceAttack extends AttackAPI{
 		char[] passChars = this.password.toCharArray();
 		if(!rangeCheck(range, passChars)) {
 			estimate = BigInteger.ONE.negate();
-			System.out.println(range.toString() +" final: " + estimate);
+			//System.out.println(range.toString() +" final: " + estimate);
 			return estimate;
 		}
 		int passLen = passChars.length;
@@ -219,12 +223,24 @@ public class BruteForceAttack extends AttackAPI{
 	
 	@Override
 	protected void done() {
-		//A regular computer would likely make about 100,000 guesses per second. 
-		//https://www.expressvpn.com/blog/how-attackers-brute-force-password/#:~:text=How%20quickly%20an%20attacker%20can,about%20100%2C000%20guesses%20per%20second.
+		NumberFormat formatter = new DecimalFormat("0.######E0", DecimalFormatSymbols.getInstance(Locale.ROOT));
 
-		BigInteger speed = BigInteger.valueOf(100000);
-		BigInteger time = this.estimatedGuesses.divide(speed);
-		this.model.updateAdditionalComments(AttackType.BRUTE_FORCE, "It would take approximately " + time.toString() + " seconds to crack this password given a 100000 guesses/sec brute-force attack");
+		this.model.updateAdditionalComments(AttackType.BRUTE_FORCE, "Alpha(A-Z) \n: "+ (alpha.equals(BigInteger.ONE.negate())? "Failed" : formatter.format(alpha))
+		+ "\n\nLowerAlpha(a-z): \n"+ (lower_alpha.equals(BigInteger.ONE.negate())? "Failed" : formatter.format(lower_alpha))
+		+ "\n\nMixAlpha(A-Za-z): \n"+ (mix_alpha.equals(BigInteger.ONE.negate())? "Failed" : formatter.format(mix_alpha))
+		+ "\n\nNumeric(0-9): \n"+ (numeric.equals(BigInteger.ONE.negate())? "Failed" : formatter.format(numeric))
+		+ "\n\nAlphaNumeric(0-9A-Z): \n"+ (alpha_numeric.equals(BigInteger.ONE.negate())? "Failed" : formatter.format(alpha_numeric))
+		+ "\n\nLowerAlphaNumeric(0-9a-z) \n: "+ (lower_alpha_numeric.equals(BigInteger.ONE.negate())? "Failed" : formatter.format(lower_alpha_numeric))
+		+ "\n\nMixAlphaNumeric(0-9A-Za-z) \n: "+ (mix_alpha_numeric.equals(BigInteger.ONE.negate())? "Failed" : formatter.format( mix_alpha_numeric)));
+		
+		this.model.results[0] = this.estimatedGuesses;
+		this.model.results[1] = this.alpha;
+		this.model.results[2] = this.lower_alpha;
+		this.model.results[3] = this.mix_alpha;
+		this.model.results[4] = this.numeric;
+		this.model.results[5] = this.alpha_numeric;
+		this.model.results[6] = this.lower_alpha_numeric;
+		this.model.results[7] = this.mix_alpha_numeric;
 	}
 
 }

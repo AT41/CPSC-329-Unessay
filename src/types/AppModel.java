@@ -23,7 +23,25 @@ public class AppModel {
 	CommonPasswordsAttack cpAttack;
 	RainbowTableAttack rpAttack;
 	DictionaryAttack dAttack;
-
+	
+	
+	/**
+	 * 0. BruteForce Result
+	 * 1. BruteForce-Alpha Result
+	 * 2. BruteForce-Lower-Alpha Result
+	 * 3. BruteForce-Mix-Alpha Result
+	 * 4. BruteForce-Numeric Result
+	 * 5. BruteForce-Alpha-Numeric Result
+	 * 6. BruteForce-Lower-Alpha-Numeric Result
+	 * 7. BruteForce-Mix-Alpha-Numeric Result
+	 * 8. CommonPasswords Result
+	 * 9. Rainbow Table Result
+	 * 10. Dictionary Result
+	 */
+	BigInteger[] results = new BigInteger[11];
+	
+	
+	
 	ArrayList<AttackListener> controllerListener;
 
 	// constructor

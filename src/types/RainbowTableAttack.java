@@ -3,7 +3,11 @@ package types;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.math.BigInteger;
+import java.text.DecimalFormat;
+import java.text.DecimalFormatSymbols;
+import java.text.NumberFormat;
 import java.util.Hashtable;
+import java.util.Locale;
 import java.util.Scanner;
 
 import gui.AppView.AttackType;
@@ -49,13 +53,18 @@ public class RainbowTableAttack extends AttackAPI{
 	protected BigInteger calculateMetric() {
 		// TODO Auto-generated method stub
 		this.hashtable = constructHashTable();
-		BigInteger estimate = BigInteger.ONE;
+		BigInteger estimate = BigInteger.ONE.negate();
 		String result = hashtable.get(this.password);
 		if(result != null) {
 			this.result = result;
 			this.attackSuccess = true;
+			estimate = estimate.negate();
 		}
 		return estimate;
 	}
 
+	@Override
+	protected void done() {
+		this.model.results[9] = this.estimatedGuesses;
+	}
 }
