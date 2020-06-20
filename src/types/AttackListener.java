@@ -11,5 +11,5 @@ public interface AttackListener {
 	void setAttackGuesses(AttackType type, BigInteger guesses);
 	void setTotalGuesses(BigInteger guesses);
 	void setAttackComments(AttackType type, String comments);
-	public void enableButton();
+	public void finishedAlgorithms();
 }

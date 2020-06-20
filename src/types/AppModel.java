@@ -108,7 +108,7 @@ public class AppModel {
 				return;
 			}
 		}
-		this.controllerListener.get(0).enableButton();
+		this.controllerListener.get(0).finishedAlgorithms();
 	}
 
 	public void finishedAttackEvent(AttackType type, AttackStatus status) {

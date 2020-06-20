@@ -30,6 +30,8 @@ public interface GUI {
 	
 	public void resetView();
 	
+	public void openFinalView();
+	
 	/**
 	 * Prints to console in center
 	 * @param text

@@ -56,10 +56,6 @@ public class AppView extends Frame implements GUI {
 		this.userPanelComponents.calculateButton.addActionListener(e -> {
 			this.resetView();
 			returnsPlaintextPassword.actionPerformed(new ActionEvent(this.userPanelComponents.passwordInput, 0, ""));
-			
-			// TODO Move this all when totalGuesses have been implemented
-			Frame test = new FinalView(null, null);
-			test.setVisible(true);
 		});
 	}
 	@Override
@@ -91,6 +87,12 @@ public class AppView extends Frame implements GUI {
 	public void resetView() {
 		this.userPanelComponents.resetView();
 		this.rightPanel.resetView();
+	}
+	
+	@Override
+	public void openFinalView() {
+		Frame test = new FinalView(null, null);
+		test.setVisible(true);
 	}
 	
 	public AppView() {

@@ -67,8 +67,8 @@ public class AppController {
 		}
 		
 		@Override 
-		public void enableButton() {
-			this.view.setButtonEnableOrDisable(true);
+		public void finishedAlgorithms() {
+			this.view.openFinalView();
 		}
 	}
 	private GUI view;
