@@ -120,4 +120,10 @@ public class DictionaryAttack extends AttackAPI{
 					}
 				
 	}
+
+
+	@Override
+	protected void done() {
+		super.done();
+	}
 }

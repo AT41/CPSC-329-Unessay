@@ -37,6 +37,7 @@ public class AppController {
 	
 	class AttackDoneListener implements AttackListener{
 		private GUI view;
+		
 		AttackDoneListener(GUI view) {
 			this.view = view;
 		}
@@ -64,6 +65,11 @@ public class AppController {
 			// TODO Auto-generated method stub
 			this.view.setAdditionalCommentsFor(type, comments);
 		}
+		
+		@Override 
+		public void enableButton() {
+			this.view.setButtonEnableOrDisable(true);
+		}
 	}
 	private GUI view;
 	private AppModel model;
@@ -80,11 +86,5 @@ public class AppController {
 		this.model = model;
 		javax.swing.SwingUtilities.invokeLater(() -> this.view.addListenerForButton(new RunButtonListener(view)));
 		this.model.addAttackListener(new AttackDoneListener(view));
-		/*
-		 * the following line calls a method in the view
-		 * which connects the pressing of the button to an ActionListener.
-		 */
-		//this.view.setMethodForButtonListenerInView(new RunButtonListener());
 	}
-	
 }

@@ -40,4 +40,9 @@ public abstract class AttackAPI extends SwingWorker {
 		this.model.updateAttackGuesses(this.attackType, estimatedGuesses);
 		return this.estimatedGuesses;
 	}
+	
+	@Override
+	protected void done() {
+		this.model.whenFinished(attackType);
+	}
 }

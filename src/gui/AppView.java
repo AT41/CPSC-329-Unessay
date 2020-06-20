@@ -54,6 +54,7 @@ public class AppView extends Frame implements GUI {
 	@Override
 	public void addListenerForButton(ActionListener returnsPlaintextPassword) {
 		this.userPanelComponents.calculateButton.addActionListener(e -> {
+			this.resetView();
 			returnsPlaintextPassword.actionPerformed(new ActionEvent(this.userPanelComponents.passwordInput, 0, ""));
 			
 			// TODO Move this all when totalGuesses have been implemented

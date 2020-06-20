@@ -100,4 +100,9 @@ public class CommonPasswordsAttack extends AttackAPI {
 			return ans;
 		}
 	}
+
+	@Override
+	protected void done() {
+		super.done();
+	}
 }

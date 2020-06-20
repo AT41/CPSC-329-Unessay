@@ -24,14 +24,8 @@ public class AppModel {
 	CommonPasswordsAttack cpAttack;
 	RainbowTableAttack rpAttack;
 	DictionaryAttack dAttack;
-	
-	/*
-	
-	BigInteger[] results = new BigInteger[11];*/
-	
-	//ArrayList<BigInteger> resultList = new ArrayList<BigInteger>();
-	//ArrayList<String> resultInfo = new ArrayList<String>();
 	Hashtable<String, BigInteger> resultInfo = new Hashtable<String,BigInteger>();
+	private boolean[] completed;
 	
 	
 	ArrayList<AttackListener> controllerListener;
@@ -92,6 +86,7 @@ public class AppModel {
 	}
 
 	public void runAlgorithms() {
+		this.completed = new boolean[AttackType.values().length];
 		this.bfAttack = new BruteForceAttack(plainTextPassword,this);
 		this.bfAttack.execute();
 
@@ -104,6 +99,16 @@ public class AppModel {
 		
 		this.dAttack = new DictionaryAttack(plainTextPassword,this);
 		this.dAttack.execute();
+	}
+	
+	public void whenFinished(AttackType type) {
+		this.completed[type.ordinal()] = true;
+		for (int i = 0; i < this.completed.length; i++) {
+			if (!this.completed[i]) {
+				return;
+			}
+		}
+		this.controllerListener.get(0).enableButton();
 	}
 
 	public void finishedAttackEvent(AttackType type, AttackStatus status) {

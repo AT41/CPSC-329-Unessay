@@ -242,7 +242,7 @@ public class BruteForceAttack extends AttackAPI{
 		this.model.resultInfo.put("BruteForceAttack alpha_numeric Result", this.alpha_numeric);
 		this.model.resultInfo.put("BruteForceAttack lower_alpha_numeric Result", this.lower_alpha_numeric);
 		this.model.resultInfo.put("BruteForceAttack mix_alpha_numeric Result", this.mix_alpha_numeric);
-		
+		super.done();
 	}
 
 }

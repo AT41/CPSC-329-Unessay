@@ -66,5 +66,6 @@ public class RainbowTableAttack extends AttackAPI{
 	@Override
 	protected void done() {
 		this.model.resultInfo.put("BruteForceAttack mix_alpha_numeric Result", this.estimatedGuesses);
+		super.done();
 	}
 }
