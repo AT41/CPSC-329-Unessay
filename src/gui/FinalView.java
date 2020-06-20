@@ -75,6 +75,7 @@ public class FinalView extends JFrame {
 		this.setSize(400, 250);
 		this.setLayout(new BoxLayout(getContentPane(), BoxLayout.PAGE_AXIS));
 		this.setTitle("Final Results");
+	    this.setResizable(false);
 		
 		JLabel topMsg = new JLabel("It took a minimum of X " + " guesses to reach your password.");
 		topMsg.setAlignmentX(Component.CENTER_ALIGNMENT);

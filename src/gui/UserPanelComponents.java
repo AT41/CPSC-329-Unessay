@@ -1,5 +1,7 @@
 package gui;
 
+import java.awt.Color;
+
 import javax.swing.JButton;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
@@ -19,7 +21,7 @@ class UserPanelComponents {
 		}
 		
 		public void printToConsole(String text) {
-			this.consoleText.setText(this.consoleText.getText() + "\n" + text);
+			this.consoleText.append(text + "\n");
 			this.scroller.getVerticalScrollBar().setValue(this.scroller.getVerticalScrollBar().getMaximum());
 		}
 		

@@ -6,6 +6,8 @@ import java.awt.Component;
 import java.awt.Container;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
+import java.awt.Font;
+import java.awt.FontFormatException;
 import java.awt.Frame;  // Using Frame class in package java.awt
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
@@ -15,6 +17,8 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.io.File;
+import java.io.IOException;
 import java.math.BigInteger;
 
 import javax.swing.BorderFactory;
@@ -27,6 +31,7 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
+import javax.swing.border.BevelBorder;
 
 import gui.AppView.AttackType;
 //A GUI program is written as a subclass of Frame - the top-level container
@@ -44,11 +49,13 @@ public class AppView extends Frame implements GUI {
 		POSSIBLE
 	}
 	private static final String[] ATTACK_NAMES = {"Brute Force Attack", "Common Passwords Attack", "Rainbow Table Attack", "Dictionary Attack"};
-	private static final int[] WIDTH_HEIGHT = {700, 800};
+	private static final int[] WIDTH_HEIGHT = {710, 800};
 
 	private RightPanel rightPanel;
 	private LeftPanel leftPanel;
 	private UserPanelComponents userPanelComponents;
+	
+	private Font customFont = null;
 
 
 	@Override
@@ -91,6 +98,7 @@ public class AppView extends Frame implements GUI {
 	
 	@Override
 	public void openFinalView() {
+		this.setButtonEnableOrDisable(true);
 		Frame test = new FinalView(null, null);
 		test.setVisible(true);
 	}
@@ -102,8 +110,13 @@ public class AppView extends Frame implements GUI {
             }
         });
 		
-		javax.swing.SwingUtilities.invokeLater(() -> {initialize();});
+		try {
+			this.customFont = Font.createFont(Font.TRUETYPE_FONT, new File("resources/CONSOLA.TTF")).deriveFont(12f);
+		} catch (Exception e1) {
+			System.err.println("Could not load font");
+		}
 		
+		javax.swing.SwingUtilities.invokeLater(() -> {initialize();});
 	}
 	
 	private void initialize() {
@@ -139,22 +152,33 @@ public class AppView extends Frame implements GUI {
 		JTextField passwordInput = new JTextField();
 		passwordInput.setAlignmentX(Component.CENTER_ALIGNMENT);
 		passwordInput.setMaximumSize(
-				new Dimension(200, passwordInput.getPreferredSize().height)
+			new Dimension(200, passwordInput.getPreferredSize().height)
 		);
+		JPanel buttonPanel = new JPanel();
 		JButton calculateButton = new JButton("Calculate Strength");
 		calculateButton.setDoubleBuffered(true); // Prevents button from flickering
 		calculateButton.setAlignmentX(Component.CENTER_ALIGNMENT);
+		buttonPanel.add(calculateButton);
+		buttonPanel.setMaximumSize(new Dimension(Integer.MAX_VALUE, 100));
 		
 		userInput.add(passwordLabel);
 		userInput.add(passwordInput);
-		userInput.add(calculateButton);
+		userInput.add(buttonPanel);
 
-		JTextArea console = new JTextArea();
+		JTextArea console = new JTextArea(
+			  "====================================\n"
+			+ "           Enter a Password         \n"
+			+ "====================================\n"
+		);
 		JScrollPane scroller = new JScrollPane(console);
-		scroller.setBorder(BorderFactory.createLineBorder(AppView.BORDER_COLOR));
+		scroller.setBorder(BorderFactory.createLineBorder(Color.GRAY, 3));
 		scroller.setVisible(true);
+		scroller.setMaximumSize(new Dimension(268, Integer.MAX_VALUE));
 		console.setEditable(false);
 		console.setVisible(true);
+		console.setFont(this.customFont);
+		console.setBackground(Color.black);
+		console.setForeground(Color.green);
 		userInput.add(scroller);
 		this.userPanelComponents = new UserPanelComponents(passwordInput, calculateButton, console, scroller);
 		
@@ -163,15 +187,17 @@ public class AppView extends Frame implements GUI {
 	
 	private LeftPanel createLeftSide() {
 		JPanel leftPanel = new JPanel();
-		leftPanel.setLayout(new BoxLayout(leftPanel, BoxLayout.PAGE_AXIS)/*new GridLayout(AppView.ATTACK_NAMES.length, 1)*/);
+		leftPanel.setLayout(new BoxLayout(leftPanel, BoxLayout.PAGE_AXIS));
 		leftPanel.setVisible(true);
-		leftPanel.setBorder(BorderFactory.createLineBorder(AppView.BORDER_COLOR));
 		
 		JLabel[] allLabels = new JLabel[AppView.ATTACK_NAMES.length];
 		JButton[] infoButtons = new JButton[AppView.ATTACK_NAMES.length];
 		for (int i = 0; i < AppView.ATTACK_NAMES.length; i++) {
 			JPanel temp = new JPanel(new FlowLayout(FlowLayout.LEFT));
-			temp.setBorder(BorderFactory.createMatteBorder(0, 0, 1, 0, AppView.BORDER_COLOR));
+			temp.setBorder(BorderFactory.createCompoundBorder(
+				BorderFactory.createMatteBorder(i == 0 ? 1 : 0, 1, i == AppView.ATTACK_NAMES.length - 1? 1 : 0, 1, Color.gray),
+				BorderFactory.createBevelBorder(BevelBorder.RAISED)
+			));
 			temp.setVisible(true);
 			temp.setMaximumSize(new Dimension(Integer.MAX_VALUE, 40));
 			
@@ -193,7 +219,7 @@ public class AppView extends Frame implements GUI {
 		attackInfo.setEditable(false);
 		
 		JScrollPane scroller = new JScrollPane(attackInfo);
-		scroller.setBorder(BorderFactory.createEmptyBorder(0, 2, 0, 2));
+		scroller.setBorder(BorderFactory.createEmptyBorder(8, 2, 0, 2));
 		leftPanel.add(scroller);
 		
 		return new LeftPanel(leftPanel, allLabels, infoButtons, attackInfo);
@@ -202,11 +228,11 @@ public class AppView extends Frame implements GUI {
 	private RightPanel createRightSide() {
 		JPanel rightPanel = new JPanel();
 		rightPanel.setLayout(new BorderLayout());
-		rightPanel.setBorder(BorderFactory.createLineBorder(AppView.BORDER_COLOR));
+		rightPanel.setBorder(BorderFactory.createLineBorder(Color.gray));
 		
 		JLabel title = new JLabel("Statistics");
 		title.setHorizontalAlignment(JLabel.CENTER);
-		title.setBorder(BorderFactory.createCompoundBorder(BorderFactory.createMatteBorder(0, 0, 1, 0, AppView.BORDER_COLOR), BorderFactory.createEmptyBorder(8, 0, 10, 0)));
+		title.setBorder(BorderFactory.createBevelBorder(BevelBorder.RAISED));
 		rightPanel.add(title, BorderLayout.NORTH);
 		
 		JLabel[] attackLabels = new JLabel[AppView.ATTACK_NAMES.length];
@@ -220,7 +246,7 @@ public class AppView extends Frame implements GUI {
 		for (int i = 0; i < AppView.ATTACK_NAMES.length; i++) {
 			JPanel holdsOutcomesAndCountAndAdditional = new JPanel();
 			holdsOutcomesAndCountAndAdditional.setLayout(new BoxLayout(holdsOutcomesAndCountAndAdditional, BoxLayout.PAGE_AXIS));
-			holdsOutcomesAndCountAndAdditional.setBorder(BorderFactory.createLineBorder(Color.green));
+			holdsOutcomesAndCountAndAdditional.setBorder(BorderFactory.createBevelBorder(BevelBorder.RAISED));
 			
 			JPanel holdsAttackAndOutcome = new JPanel(new FlowLayout(FlowLayout.LEFT));
 			holdsAttackAndOutcome.setVisible(true);
@@ -252,7 +278,7 @@ public class AppView extends Frame implements GUI {
 		
 		JPanel overallStats = new JPanel();
 		overallStats.setMaximumSize(new Dimension(Integer.MAX_VALUE, 3000));
-		overallStats.setBorder(BorderFactory.createMatteBorder(1, 0, 0, 0, this.BORDER_COLOR));
+		overallStats.setBorder(BorderFactory.createBevelBorder(BevelBorder.RAISED));
 		overallStats.setVisible(true);
 		overallStats.setLayout(new GridBagLayout());
 		JLabel overallLabel = new JLabel("Total Guesses:");

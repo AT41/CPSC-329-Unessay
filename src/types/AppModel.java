@@ -24,7 +24,7 @@ public class AppModel {
 	CommonPasswordsAttack cpAttack;
 	RainbowTableAttack rpAttack;
 	DictionaryAttack dAttack;
-	Hashtable<String, BigInteger> resultInfo = new Hashtable<String,BigInteger>();
+	public Hashtable<String, BigInteger> resultInfo = new Hashtable<String,BigInteger>();
 	private boolean[] completed;
 	
 	

@@ -17,7 +17,7 @@ public abstract class AttackAPI extends SwingWorker {
 	
 	protected boolean attackSuccess;  // set this to true if cycleCounter < cycleMax 
 	protected int cycleCounter;
-	BigInteger estimatedGuesses = BigInteger.ZERO;
+	protected BigInteger estimatedGuesses = BigInteger.ZERO;
 	protected AppModel model;
 	protected AttackType attackType;
 	

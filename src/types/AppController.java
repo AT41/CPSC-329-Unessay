@@ -3,6 +3,7 @@ package types;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.math.BigInteger;
+import java.util.Hashtable;
 
 import javax.swing.JTextField;
 
@@ -24,6 +25,7 @@ public class AppController {
 			this.view.setButtonEnableOrDisable(false);
 			System.out.println(((JTextField)e.getSource()).getText());
 
+			model.resultInfo = new Hashtable<String, BigInteger>();
 			model.setPlainTextPassword(((JTextField)e.getSource()).getText());
 			model.setHashedPassword(((JTextField)e.getSource()).getText());
 			// step 2: run algorithms
