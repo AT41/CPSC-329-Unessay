@@ -61,8 +61,13 @@ public class AppView extends Frame implements GUI {
 	@Override
 	public void addListenerForButton(ActionListener returnsPlaintextPassword) {
 		this.userPanelComponents.calculateButton.addActionListener(e -> {
-			this.resetView();
-			returnsPlaintextPassword.actionPerformed(new ActionEvent(this.userPanelComponents.passwordInput, 0, ""));
+			System.out.println(this.userPanelComponents.passwordInput.getText());
+			if (this.userPanelComponents.passwordInput.getText().isBlank()) {
+				this.userPanelComponents.console.printToConsole("Please enter a non-empty password");
+			} else {
+				this.resetView();
+				returnsPlaintextPassword.actionPerformed(new ActionEvent(this.userPanelComponents.passwordInput, 0, ""));
+			}
 		});
 	}
 	@Override
