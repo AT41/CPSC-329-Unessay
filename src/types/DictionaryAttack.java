@@ -103,7 +103,7 @@ public class DictionaryAttack extends AttackAPI{
 						} else if (lastTry == password) {
 							reader.close();
 							this.attackSuccess = false;
-							return estimate;
+							return BigInteger.ONE.negate();
 							
 						} else {
 							estimate = estimate.pow(2);

@@ -6,8 +6,12 @@ import java.awt.GridLayout;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.math.BigInteger;
+import java.text.DecimalFormat;
+import java.text.DecimalFormatSymbols;
+import java.text.NumberFormat;
 import java.util.Hashtable;
 import java.util.List;
+import java.util.Locale;
 import java.util.Set;
 
 import javax.swing.BorderFactory;
@@ -86,8 +90,9 @@ public class FinalView extends JFrame {
 		this.setLayout(new BoxLayout(getContentPane(), BoxLayout.PAGE_AXIS));
 		this.setTitle("Final Results");
 	    this.setResizable(false);
-		
-		JLabel topMsg = new JLabel("It took a minimum of X " + " guesses to reach your password.");
+
+	    NumberFormat formatter = new DecimalFormat("0.######E0", DecimalFormatSymbols.getInstance(Locale.ROOT));
+		JLabel topMsg = new JLabel("It took a minimum of " + formatter.format(this.minimumTotalGuesses).replaceAll("E", "e") + " guesses to reach your password.");
 		topMsg.setAlignmentX(Component.CENTER_ALIGNMENT);
 		topMsg.setBorder(BorderFactory.createEmptyBorder(8, 0, 8, 0));
 		this.add(topMsg);
@@ -162,7 +167,10 @@ public class FinalView extends JFrame {
 		if (this.fastestAttackName == RainbowTableAttack.hashName) {
 			return "Your password was thwarted instantly by the Rainbow Table.";
 		} else {
-			return "Your password took " + this.minimumTotalGuesses.multiply(new BigInteger(Integer.toString((this.allGuesses.size() - this.attacksThatDontCount)))) + " guesses to beat, and was eventually beaten by this algorithm: " + this.fastestAttackName;
+		    NumberFormat formatter = new DecimalFormat("0.####E0", DecimalFormatSymbols.getInstance(Locale.ROOT));
+			return "If all attacks ran simultaneously, it would have taken " + 
+		    		formatter.format(this.minimumTotalGuesses.multiply(new BigInteger(Integer.toString((this.allGuesses.size() - this.attacksThatDontCount))))).replaceAll("E", "e")
+			+ " guesses to beat, and was eventually beaten by this algorithm: " + this.fastestAttackName;
 		}
 	}
 }

@@ -67,7 +67,7 @@ public class CommonPasswordsAttack extends AttackAPI {
 		this.attackSuccess = false;
 		this.model.updateAdditionalComments(this.attackType, "Though the attack failed, the minimum Levenschtein distance out of all the passwords was " + this.currentLevenschteinDistance 
 				+ ".\nThe closest match to the existing passwords is: " + this.levenGuess);
-		this.model.resultInfo.put("Common Passwords Attack", estimatedGuesses);
+		this.model.resultInfo.put("Common Passwords Attack", BigInteger.ONE.negate());
 		return estimatedGuesses;
 	}
 
