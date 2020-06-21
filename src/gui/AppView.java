@@ -20,6 +20,7 @@ import java.awt.event.WindowEvent;
 import java.io.File;
 import java.io.IOException;
 import java.math.BigInteger;
+import java.util.Hashtable;
 
 import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
@@ -61,7 +62,6 @@ public class AppView extends Frame implements GUI {
 	@Override
 	public void addListenerForButton(ActionListener returnsPlaintextPassword) {
 		this.userPanelComponents.calculateButton.addActionListener(e -> {
-			System.out.println(this.userPanelComponents.passwordInput.getText());
 			if (this.userPanelComponents.passwordInput.getText().isBlank()) {
 				this.userPanelComponents.console.printToConsole("Please enter a non-empty password");
 			} else {
@@ -83,10 +83,6 @@ public class AppView extends Frame implements GUI {
 		this.userPanelComponents.calculateButton.setEnabled(shouldEnable);
 	}
 	@Override
-	public void setTotalGuesses(BigInteger guesses) {
-		this.rightPanel.setTotalGuesses(guesses);
-	}
-	@Override
 	public void setGuessesFor(AttackType type, BigInteger guesses) {
 		this.rightPanel.setGuessesFor(type, guesses);
 	}
@@ -102,9 +98,9 @@ public class AppView extends Frame implements GUI {
 	}
 	
 	@Override
-	public void openFinalView() {
+	public void openFinalView(Hashtable<String, BigInteger> allGuesses) {
 		this.setButtonEnableOrDisable(true);
-		Frame test = new FinalView(null, null);
+		Frame test = new FinalView(allGuesses);
 		test.setVisible(true);
 	}
 	
@@ -280,23 +276,8 @@ public class AppView extends Frame implements GUI {
 			
 			temp.add(holdsOutcomesAndCountAndAdditional);
 		}
-		
-		JPanel overallStats = new JPanel();
-		overallStats.setMaximumSize(new Dimension(Integer.MAX_VALUE, 3000));
-		overallStats.setBorder(BorderFactory.createBevelBorder(BevelBorder.RAISED));
-		overallStats.setVisible(true);
-		overallStats.setLayout(new GridBagLayout());
-		JLabel overallLabel = new JLabel("Total Guesses:");
-		JLabel totalGuesses = new JLabel("");
-		GridBagConstraints gbc = new GridBagConstraints();
-		gbc.gridy = 1;
-		overallStats.add(overallLabel);
-		overallStats.add(totalGuesses, gbc);
-		
-		temp.add(overallStats);
-		
 		rightPanel.add(temp, BorderLayout.CENTER);
 		
-		return new RightPanel(rightPanel, outcomeLabels, attackGuesses, additionalStats, totalGuesses);
+		return new RightPanel(rightPanel, outcomeLabels, attackGuesses, additionalStats);
 	}
 }

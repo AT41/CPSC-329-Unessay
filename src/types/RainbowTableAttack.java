@@ -13,7 +13,7 @@ import java.util.Scanner;
 import gui.AppView.AttackType;
 
 public class RainbowTableAttack extends AttackAPI{
-	
+	public static String hashName = "Rainbow Table Attack Result";
 	private static final String hashFileLocation = "src/types/hashFile/hashes.txt";
 	public String result;
 	private Hashtable<String,String> hashtable;
@@ -65,7 +65,7 @@ public class RainbowTableAttack extends AttackAPI{
 
 	@Override
 	protected void done() {
-		this.model.resultInfo.put("BruteForceAttack mix_alpha_numeric Result", this.estimatedGuesses);
+		this.model.resultInfo.put(this.hashName, this.estimatedGuesses);
 		super.done();
 	}
 }

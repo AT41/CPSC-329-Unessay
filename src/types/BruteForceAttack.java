@@ -225,13 +225,13 @@ public class BruteForceAttack extends AttackAPI{
 	protected void done() {
 		NumberFormat formatter = new DecimalFormat("0.######E0", DecimalFormatSymbols.getInstance(Locale.ROOT));
 
-		this.model.updateAdditionalComments(AttackType.BRUTE_FORCE, "(A-Z) : "+ (alpha.equals(BigInteger.ONE.negate())? "Failed" : formatter.format(alpha))
-		+ "\n(a-z): "+ (lower_alpha.equals(BigInteger.ONE.negate())? "Failed" : formatter.format(lower_alpha))
-		+ "\n(A-Za-z): "+ (mix_alpha.equals(BigInteger.ONE.negate())? "Failed" : formatter.format(mix_alpha))
-		+ "\n(0-9): "+ (numeric.equals(BigInteger.ONE.negate())? "Failed" : formatter.format(numeric))
-		+ "\n(0-9A-Z): "+ (alpha_numeric.equals(BigInteger.ONE.negate())? "Failed" : formatter.format(alpha_numeric))
-		+ "\n(0-9a-z) : "+ (lower_alpha_numeric.equals(BigInteger.ONE.negate())? "Failed" : formatter.format(lower_alpha_numeric))
-		+ "\n(0-9A-Za-z) : "+ (mix_alpha_numeric.equals(BigInteger.ONE.negate())? "Failed" : formatter.format( mix_alpha_numeric)));
+		this.model.updateAdditionalComments(AttackType.BRUTE_FORCE, "(A-Z) : "+ (alpha.equals(BigInteger.ONE.negate())? "Failed" : formatter.format(alpha).replaceAll("E", "e"))
+		+ "\n(a-z): "+ (lower_alpha.equals(BigInteger.ONE.negate())? "Failed" : formatter.format(lower_alpha).replaceAll("E", "e"))
+		+ "\n(A-Za-z): "+ (mix_alpha.equals(BigInteger.ONE.negate())? "Failed" : formatter.format(mix_alpha).replaceAll("E", "e"))
+		+ "\n(0-9): "+ (numeric.equals(BigInteger.ONE.negate())? "Failed" : formatter.format(numeric).replaceAll("E", "e"))
+		+ "\n(0-9A-Z): "+ (alpha_numeric.equals(BigInteger.ONE.negate())? "Failed" : formatter.format(alpha_numeric).replaceAll("E", "e"))
+		+ "\n(0-9a-z) : "+ (lower_alpha_numeric.equals(BigInteger.ONE.negate())? "Failed" : formatter.format(lower_alpha_numeric).replaceAll("E", "e"))
+		+ "\n(0-9A-Za-z) : "+ (mix_alpha_numeric.equals(BigInteger.ONE.negate())? "Failed" : formatter.format( mix_alpha_numeric).replaceAll("E", "e")));
 
 		
 		this.model.resultInfo.put("BruteForceAttack All chars Result", this.estimatedGuesses);
