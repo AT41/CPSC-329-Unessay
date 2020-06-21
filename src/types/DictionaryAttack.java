@@ -86,23 +86,21 @@ public class DictionaryAttack extends AttackAPI{
 						
 						// Remove word if found
 						password = password.substring(longestguess.length(), password.length());
-						System.out.println("WORD FOUND: " + longestguess);
+						//System.out.println("WORD FOUND: " + longestguess);
 						if (longestguess.length() > 0) {
 							wordsFound.add(longestguess);
 						}
-						System.out.println("Word removed, new PW: " + password);
+						//System.out.println("Word removed, new PW: " + password);
 						//System.out.println("Last try: " + lastTry);
 						if (password.length() == 0) {
 							//System.out.println("Sep: " + separators.toString());
 							estimate = estimate.multiply(separators);
-							this.model.updateAdditionalComments(AttackType.DICTIONARY, "English dictionary words found: " + wordsFound.toString());
 							this.attackSuccess = true;
 							this.result = line;
 							reader.close();
 							return estimate;
 							
 						} else if (lastTry == password) {
-							this.model.updateAdditionalComments(AttackType.DICTIONARY, "English dictionary words found: " + wordsFound.toString());
 							reader.close();
 							this.attackSuccess = false;
 							return estimate;
@@ -124,6 +122,8 @@ public class DictionaryAttack extends AttackAPI{
 
 	@Override
 	protected void done() {
+		this.model.updateAdditionalComments(AttackType.DICTIONARY, "English dictionary words found: " + wordsFound.toString());
+		this.model.resultInfo.put("Dictionary Attack", this.estimatedGuesses);
 		super.done();
 	}
 }
