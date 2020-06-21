@@ -60,7 +60,7 @@ public class DictionaryAttack extends AttackAPI{
 							line = line.toLowerCase();
 							
 							
-							if (line.length() < 3) {
+							if (line.length() < 1) {
 								continue;
 							}
 
