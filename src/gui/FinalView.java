@@ -65,23 +65,41 @@ public class FinalView extends JFrame {
 		}
 		
 		private String convert(BigInteger totalSeconds) {
-	        String result = "";
+			String result = "";
 	        BigInteger hours = totalSeconds.divide(BigInteger.valueOf(3600));
 	        BigInteger days = hours.divide(BigInteger.valueOf(24));
 	        BigInteger years = days.divide(BigInteger.valueOf(365));
 	        
+	        BigInteger yearsInSeconds = (BigInteger.valueOf(3600).multiply(BigInteger.valueOf(24))).multiply(BigInteger.valueOf(365));
+	        BigInteger daysInSeconds = (BigInteger.valueOf(3600)).multiply(BigInteger.valueOf(24));
+	        BigInteger hoursInSeconds = BigInteger.valueOf(3600);
+	        
+	        
+	        BigInteger temp1 = years.multiply(yearsInSeconds);
+	        BigInteger remainingSeconds = totalSeconds.subtract(temp1);
+	        
+	        days = (remainingSeconds.divide(BigInteger.valueOf(3600))).divide(BigInteger.valueOf(24));
+	        BigInteger temp2 = days.multiply(daysInSeconds);
+	        remainingSeconds = remainingSeconds.subtract(temp2);
+	        
+	        hours = remainingSeconds.divide(BigInteger.valueOf(3600));
+	        BigInteger temp3 = hours.multiply(hoursInSeconds);
+	        remainingSeconds = remainingSeconds.subtract(temp3);
+	        BigInteger seconds = remainingSeconds;
+	        
+	        
 	        if(years.equals(BigInteger.ZERO)) {
 	            if(days.equals(BigInteger.ZERO)) {
-	                result = "Hours: " + hours.toString() + ", Seconds: " + totalSeconds.toString();
+	                result = "Hours: " + hours.toString() + ", Seconds: " + seconds.toString();
 	            }
 	            else {
 	                result = "Days: " + days.toString() + ", Hours: " + hours.toString();
 	            }
 	        }
 	        else {
-	            result = "Years: " + years.toString() + ", Days: " + days.toString() + "\n";
+	            result = "Years: " + years.toString() + ", Days: " + days.toString();
 	        }
-	        
+	        //System.out.print(result);
 	        return result;
 	    }
 	}
