@@ -53,13 +53,20 @@ public class RainbowTableAttack extends AttackAPI{
 	protected BigInteger calculateMetric() {
 		// TODO Auto-generated method stub
 		this.hashtable = constructHashTable();
+		this.model.callUpdateConsole("Checking rainbow table for '" + this.password + "'...");
 		BigInteger estimate = BigInteger.ONE.negate();
 		String result = hashtable.get(this.password);
 		if(result != null) {
 			this.result = result;
 			this.attackSuccess = true;
 			estimate = estimate.negate();
+			this.model.callUpdateConsole("Rainbow table searched, match found. Plaintext is '" + this.result +"'");
+			
 		}
+		else {
+			this.model.callUpdateConsole("Rainbow table searched, match not found.");
+		}
+		
 		return estimate;
 	}
 

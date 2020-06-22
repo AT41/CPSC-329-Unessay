@@ -38,6 +38,8 @@ public abstract class AttackAPI extends SwingWorker {
 		this.estimatedGuesses = calculateMetric();
 		this.model.finishedAttackEvent(this.attackType, attackSuccess ? AttackStatus.POSSIBLE : AttackStatus.IMPOSSIBLE);
 		this.model.updateAttackGuesses(this.attackType, estimatedGuesses);
+		this.model.callUpdateConsole("Finished " + this.attackType.toString() + " Attack");
+		
 		return this.estimatedGuesses;
 	}
 	
