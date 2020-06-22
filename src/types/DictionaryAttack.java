@@ -27,7 +27,10 @@ public class DictionaryAttack extends AttackAPI{
 	protected BigInteger calculateMetric() {
 		// TODO Auto-generated method stub
 				BigInteger estimate = BigInteger.ZERO;
-				BigInteger separators = BigInteger.ONE;
+				//BigInteger separators = BigInteger.ONE;
+				int words = 0;
+				BigInteger total = BigInteger.valueOf(216555);
+				
 				try{
 					File file = new File(dictionaryFileLocation);
 					
@@ -42,11 +45,11 @@ public class DictionaryAttack extends AttackAPI{
 						
 						if (password.charAt(0) == '_' || password.charAt(0) == ' ') {
 							password = password.substring(1, password.length());
-							separators = separators.multiply(BigInteger.TWO);
+							//separators = separators.multiply(BigInteger.TWO);
 						}
 						
 						if (Character.isUpperCase(password.charAt(0))) {
-							separators = separators.multiply(BigInteger.TWO);
+							//separators = separators.multiply(BigInteger.TWO);
 							//System.out.println("Uppercase: " + password);
 							password = password.substring(0, 1).toLowerCase() + password.substring(1);
 						}
@@ -89,12 +92,14 @@ public class DictionaryAttack extends AttackAPI{
 						//System.out.println("WORD FOUND: " + longestguess);
 						if (longestguess.length() > 0) {
 							wordsFound.add(longestguess);
+							
 						}
 						//System.out.println("Word removed, new PW: " + password);
 						//System.out.println("Last try: " + lastTry);
 						if (password.length() == 0) {
-							//System.out.println("Sep: " + separators.toString());
-							estimate = estimate.multiply(separators);
+							System.out.println(estimate + ", " + total + ", " + words);
+							estimate = estimate.multiply(BigInteger.TWO.multiply(BigInteger.TWO.multiply((total.pow(words)))));
+							//estimate = estimate.multiply(separators);
 							this.attackSuccess = true;
 							this.result = line;
 							reader.close();
@@ -106,8 +111,12 @@ public class DictionaryAttack extends AttackAPI{
 							return BigInteger.ONE.negate();
 							
 						} else {
-							estimate = estimate.pow(2);
+							words++;
+							estimate = BigInteger.ZERO;
+							//estimate = estimate.multiply(words);
+							
 						}
+						
 					}
 						
 					
