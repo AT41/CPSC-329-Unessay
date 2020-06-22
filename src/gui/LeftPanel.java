@@ -24,7 +24,7 @@ class LeftPanel {
 		+ "\n\nWe felt it appropriate to add this to our algorithm, as a brute force attack modifying existing passwords in a common passwords database can break your password easily."
 		+ "\n\nAlthough our algorithm will iterate through all the passwords we have stored in order to calculate the Levenschtein distance and the rank of the popularity of the password, a closer to life implementation would be to pre-hash these common passwords and combine them with an existing rainbow table, though all competent databases pre-salt user passwords to foil rainbow table attacks.",
 		
-		"The rainbow table attack takes a list of solved md5 hashes and compares them to the md5 hash of the user's password to see if there are any matches.",
+		"The rainbow table attack queries a hash table which contains solved MD5 hashes. It checks the table to see if it contains the MD5 hash of the user's to determine the associated plaintext.",
 		
 		"The dictionary attack is a more efficient type of brute force attack which instead systematically enters dictionary words, as well as combinations of several words. This attack has many limitations, such as case sensitivity, misspellings, and numbers of other non-alphabetic characters."
 		+ "\n\nWe use a list of 216,557 English words. Each time another dictionary word is compounded, the number of guesses needed is raised to the number of additional words, as the attack would need to try every multiple word combination, since the previous words wouldn't be realistically known."

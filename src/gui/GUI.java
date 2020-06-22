@@ -2,6 +2,7 @@ package gui;
 
 import java.awt.event.ActionListener;
 import java.math.BigInteger;
+import java.util.Hashtable;
 
 import gui.AppView.AttackStatus;
 import gui.AppView.AttackType;
@@ -22,19 +23,17 @@ public interface GUI {
 	 */
 	public void setStatusFor(AttackType type, AttackStatus status);
 	
-	public void setTotalGuesses(BigInteger guesses);
-	
 	public void setGuessesFor(AttackType type, BigInteger guesses);
 	
 	public void setAdditionalCommentsFor(AttackType type, String comments);
 	
 	public void resetView();
 	
-	public void openFinalView();
-	
 	/**
 	 * Prints to console in center
 	 * @param text
 	 */
 	public void printToGUIConsole(String text);
+
+	void openFinalView(Hashtable<String, BigInteger> allGuesses);
 }

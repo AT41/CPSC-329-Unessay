@@ -20,15 +20,13 @@ class RightPanel {
 	public JLabel[] attackGuesses;
 	public JTextArea[] additionalStats;
 	public JPanel panel;
-	public JLabel overallGuesses;
 	
 	private static final String attackGuessesText = "Total Guesses: ";
 	private static final String additionalStatText = "Additional Stats: \n";
 	
-	public RightPanel(JPanel panel, JLabel[] allLabels, JLabel[] attackGuesses, JTextArea[] additionalStats, JLabel overallGuesses) {
+	public RightPanel(JPanel panel, JLabel[] allLabels, JLabel[] attackGuesses, JTextArea[] additionalStats) {
 		this.outcomes = allLabels;
 		this.panel = panel;
-		this.overallGuesses = overallGuesses;
 		this.attackGuesses = attackGuesses;
 		this.additionalStats = additionalStats;
 		
@@ -40,14 +38,9 @@ class RightPanel {
 		outcomes[labelIndex].setForeground(status == AttackStatus.IMPOSSIBLE ? Color.red : Color.green);
 	}
 	
-	public void setTotalGuesses(BigInteger totalGuesses) {
-	    NumberFormat formatter = new DecimalFormat("0.######E0", DecimalFormatSymbols.getInstance(Locale.ROOT));
-		this.overallGuesses.setText(formatter.format(totalGuesses));
-	}
-	
 	public void setGuessesFor(AttackType type, BigInteger guesses) {
 	    NumberFormat formatter = new DecimalFormat("0.######E0", DecimalFormatSymbols.getInstance(Locale.ROOT));
-	    this.attackGuesses[type.ordinal()].setText(attackGuessesText + formatter.format(guesses));
+	    this.attackGuesses[type.ordinal()].setText(attackGuessesText + formatter.format(guesses).replaceAll("E", "e"));
 	};
 	
 	public void setAdditionalStat(AttackType type, String info) {

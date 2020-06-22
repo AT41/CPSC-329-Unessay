@@ -108,7 +108,7 @@ public class AppModel {
 				return;
 			}
 		}
-		this.controllerListener.get(0).finishedAlgorithms();
+		this.controllerListener.get(0).finishedAlgorithms(resultInfo);
 	}
 
 	public void finishedAttackEvent(AttackType type, AttackStatus status) {
@@ -132,12 +132,4 @@ public class AppModel {
 			al.setAttackGuesses(type, guesses);
 		}
 	}
-	public void updateTotalGuesses(BigInteger guesses) {
-		for(AttackListener al : this.controllerListener) {
-			al.setTotalGuesses(guesses);
-		}
-	}
-
-
-
 }

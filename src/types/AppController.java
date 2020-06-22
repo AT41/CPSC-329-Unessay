@@ -58,19 +58,14 @@ public class AppController {
 			this.view.setGuessesFor(type, guesses);
 		}
 		@Override
-		public void setTotalGuesses(BigInteger guesses) {
-			// TODO Auto-generated method stub
-			this.view.setTotalGuesses(guesses);
-		}
-		@Override
 		public void setAttackComments(AttackType type, String comments) {
 			// TODO Auto-generated method stub
 			this.view.setAdditionalCommentsFor(type, comments);
 		}
 		
 		@Override 
-		public void finishedAlgorithms() {
-			this.view.openFinalView();
+		public void finishedAlgorithms(Hashtable<String, BigInteger> allGuesses) {
+			this.view.openFinalView(allGuesses);
 		}
 	}
 	private GUI view;
