@@ -39,14 +39,16 @@ public class FinalView extends JFrame {
 	class SliderListener implements ChangeListener {
 		private JLabel sliderVal;
 		private JLabel totaltime;
+		private JTextArea hardwareSpecs;
 		private FinalView origin;
 		private BigInteger totalGuesses;
 		
-		public SliderListener(JLabel sliderVal, JLabel totalTime, FinalView origin, BigInteger totalGuesses) {
+		public SliderListener(JLabel sliderVal, JLabel totalTime, JTextArea hardwareSpecs, FinalView origin, BigInteger totalGuesses) {
 			this.sliderVal = sliderVal;
 			this.origin = origin;
 			this.totaltime = totalTime;
 			this.totalGuesses = totalGuesses;
+			this.hardwareSpecs = hardwareSpecs;
 		}
 		
 		@Override
@@ -59,6 +61,7 @@ public class FinalView extends JFrame {
 		    NumberFormat formatter = new DecimalFormat("0.##E0", DecimalFormatSymbols.getInstance(Locale.ROOT));
 			this.sliderVal.setText("MD5 Hashes per second: " + formatter.format(origin.getValueCorrespondingTo(valueOfSlider)));
 			this.totaltime.setText("This would roughly take " + convert(this.totalGuesses.divide(origin.getValueCorrespondingTo(valueOfSlider))));
+			this.hardwareSpecs.setText("To generate those amount of guesses per second, an attacker would need: " + origin.getDescriptionCorrespondingTo(valueOfSlider));
 		}
 		
 		private String convert(BigInteger totalSeconds) {
@@ -122,8 +125,13 @@ public class FinalView extends JFrame {
 		return returnVal;
 	}
 	
+	private String getDescriptionCorrespondingTo(double valueOfSlider) {
+		double index = (valueOfSlider / 100 * (this.CAPABILITIES.length - 1));
+		return this.CAPABILITIES[(int)(index) + (index%1 < 0.5? 0 : 1)].hardwareSpecs;
+	}
+	
 	private void initialize() {
-		this.setSize(500, 250);
+		this.setSize(500, 300);
 		this.setLayout(new BoxLayout(getContentPane(), BoxLayout.PAGE_AXIS));
 		this.setTitle("Final Results");
 	    this.setResizable(false);
@@ -158,7 +166,18 @@ public class FinalView extends JFrame {
 	private Component makeSlider() {
 		JPanel sliderContainer = new JPanel();
 		sliderContainer.setLayout(new BoxLayout(sliderContainer, BoxLayout.PAGE_AXIS));
-
+		
+		JPanel tempHolder2 = new JPanel();
+		tempHolder2.setVisible(true);
+		JTextArea totalGuesses = new JTextArea(setAttackTimeText());
+		totalGuesses.setEditable(false);
+		totalGuesses.setLineWrap(true);
+		totalGuesses.setWrapStyleWord(true);
+		totalGuesses.setOpaque(false);
+		totalGuesses.setSize(367, 200);
+		tempHolder2.add(totalGuesses);
+		sliderContainer.add(tempHolder2);
+		
 		JSlider slider = new JSlider(0, 100);
 		JPanel tempHolder1 = new JPanel();
 		tempHolder1.setVisible(true);
@@ -166,7 +185,8 @@ public class FinalView extends JFrame {
 		JLabel sliderVal = new JLabel(/*"MD5 Hashes per second: " + formatter.format(this.getValueCorrespondingTo(slider.getValue()))*/);
 		tempHolder1.add(sliderVal);
 		this.totalTime = new JLabel();
-		SliderListener sliderListener = new SliderListener(sliderVal, this.totalTime, this, this.minimumTotalGuesses);
+		JTextArea hardwareSpecDescription = new JTextArea();
+		SliderListener sliderListener = new SliderListener(sliderVal, this.totalTime, hardwareSpecDescription, this, this.minimumTotalGuesses);
 		slider.addChangeListener(sliderListener);
 		slider.setMajorTickSpacing(20);
 		slider.setMinorTickSpacing(5);
@@ -183,30 +203,12 @@ public class FinalView extends JFrame {
 		sliderContainer.add(tempHolder1);
 		sliderContainer.add(slider);
 		
-		JPanel tempHolder2 = new JPanel();
-		tempHolder2.setVisible(true);
-		JTextArea totalGuesses = new JTextArea(setAttackTimeText());
-		totalGuesses.setEditable(false);
-		totalGuesses.setLineWrap(true);
-		totalGuesses.setWrapStyleWord(true);
-		totalGuesses.setOpaque(false);
-		totalGuesses.setSize(367, 200);
-		tempHolder2.add(totalGuesses);
-		JTextArea hardwareSpecDescription = new JTextArea();
 		hardwareSpecDescription.setEditable(false);
 		hardwareSpecDescription.setLineWrap(true);
 		hardwareSpecDescription.setWrapStyleWord(true);
 		hardwareSpecDescription.setOpaque(false);
 		hardwareSpecDescription.setBorder(BorderFactory.createEmptyBorder(4,8,4,8));
-		sliderContainer.add(tempHolder2);
 		sliderContainer.add(hardwareSpecDescription);
-		
-		JTextArea hardwareSpecs = new JTextArea("");
-		hardwareSpecs.setEditable(false);
-		hardwareSpecs.setLineWrap(true);
-		hardwareSpecs.setWrapStyleWord(true);
-		hardwareSpecs.setOpaque(false);
-		hardwareSpecs.setSize(367, 200);
 		
 		JPanel temp3 = new JPanel();
 		temp3.setVisible(true);
