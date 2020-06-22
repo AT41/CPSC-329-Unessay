@@ -174,7 +174,6 @@ public class AppView extends Frame implements GUI {
 		JScrollPane scroller = new JScrollPane(console);
 		scroller.setBorder(BorderFactory.createLineBorder(Color.GRAY, 3));
 		scroller.setVisible(true);
-		scroller.setMaximumSize(new Dimension(268, Integer.MAX_VALUE));
 		console.setEditable(false);
 		console.setVisible(true);
 		console.setFont(this.customFont);
