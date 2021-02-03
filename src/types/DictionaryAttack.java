@@ -38,13 +38,13 @@ public class DictionaryAttack extends AttackAPI{
 				BigInteger total = BigInteger.valueOf(216555);
 				
 				try {
-					InputStream is = (RainbowTableAttack.class.getResourceAsStream(dictionaryFileLocation));
-					InputStreamReader ifs = new InputStreamReader(is);
-					BufferedReader reader = new BufferedReader(ifs);
-					
 					// Does not currently work for strings like "progressible" where "pro" is a word, "gressible" is a word, 
 					// but "progress" is removed first, leaving "ible" which is not a word.
 					while (true) {
+						InputStream is = (RainbowTableAttack.class.getResourceAsStream(dictionaryFileLocation));
+						InputStreamReader ifs = new InputStreamReader(is);
+						BufferedReader reader = new BufferedReader(ifs);
+						
 						String lastTry = password;
 						String originalpassword = password;
 						String longestguess = "";
@@ -100,26 +100,24 @@ public class DictionaryAttack extends AttackAPI{
 							wordsFound.add(longestguess);
 							
 						}
-						//System.out.println("Word removed, new PW: " + password);
+						BigInteger TWO = BigInteger.ONE.add(BigInteger.ONE);
 						//System.out.println("Last try: " + lastTry);
+						reader.close();
+						is.close();
+						ifs.close();
 						if (password.length() == 0) {
-							estimate = estimate.multiply(BigInteger.ONE.add(BigInteger.ONE).multiply(BigInteger.ONE.add(BigInteger.ONE).multiply((total.pow(words)))));
+							estimate = estimate.multiply(TWO.multiply(TWO.multiply((total.pow(words)))));
 							//estimate = estimate.multiply(separators);
 							this.attackSuccess = true;
 							this.result = line;
-							reader.close();
-							is.close();
-							ifs.close();
 							return estimate;
 							
 						} else if (lastTry == password) {
-							reader.close();
-							is.close();
-							ifs.close();
 							this.attackSuccess = false;
 							return BigInteger.ONE.negate();
 							
 						} else {
+							reader = new BufferedReader(ifs);
 							words++;
 							estimate = BigInteger.ZERO;
 							//estimate = estimate.multiply(words);

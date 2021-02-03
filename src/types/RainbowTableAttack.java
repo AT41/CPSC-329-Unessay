@@ -43,7 +43,7 @@ public class RainbowTableAttack extends AttackAPI{
 			BufferedReader reader = new BufferedReader(ifs);
 			
 			String line = "";
-			while ((line = reader.readLine()) != null) {
+			while ((line = reader.readLine()) != null && !line.equals("")) {
 				String[] temp = new String[2];
 				temp[0] = line.substring(0, 32);
 				temp[1] = line.substring(33);
@@ -61,13 +61,11 @@ public class RainbowTableAttack extends AttackAPI{
 
 
 	protected String searchHash(String hash, int startIndex, int endIndex) {
-		System.out.println(startIndex + ", " + endIndex);
 		if (startIndex > endIndex) {
 			return null;
 		}
 		int compare = (startIndex + endIndex) / 2;
 		String compareHash = allHashes.get(compare)[0];
-		System.out.println(compareHash);
 		if (compareHash.compareTo(hash) > 0) {
 			return searchHash(hash, startIndex, compare - 1);
 		} else if (compareHash.compareTo(hash) < 0) {
