@@ -1,17 +1,23 @@
 package types;
 
+import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.math.BigInteger;
+import java.net.URL;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
+import gui.AppView;
 import gui.AppView.AttackType;
 
 public class DictionaryAttack extends AttackAPI{
 
-	private static final String dictionaryFileLocation = "src/types/dictionaryFile/words2.txt";
+	private static final String dictionaryFileLocation = "/types/dictionaryFile/words2.txt";
 	public String result;
 	public List<String> wordsFound = new ArrayList<String>();
 	
@@ -31,8 +37,10 @@ public class DictionaryAttack extends AttackAPI{
 				int words = 0;
 				BigInteger total = BigInteger.valueOf(216555);
 				
-				try{
-					File file = new File(dictionaryFileLocation);
+				try {
+					InputStream is = (RainbowTableAttack.class.getResourceAsStream(dictionaryFileLocation));
+					InputStreamReader ifs = new InputStreamReader(is);
+					BufferedReader reader = new BufferedReader(ifs);
 					
 					// Does not currently work for strings like "progressible" where "pro" is a word, "gressible" is a word, 
 					// but "progress" is removed first, leaving "ible" which is not a word.
@@ -41,7 +49,6 @@ public class DictionaryAttack extends AttackAPI{
 						String originalpassword = password;
 						String longestguess = "";
 						String line = "";
-						Scanner reader = new Scanner(file);
 						
 						if (password.charAt(0) == '_' || password.charAt(0) == ' ') {
 							password = password.substring(1, password.length());
@@ -54,12 +61,11 @@ public class DictionaryAttack extends AttackAPI{
 							password = password.substring(0, 1).toLowerCase() + password.substring(1);
 						}
 						
-						while (reader.hasNextLine()) {
+						while ((line = reader.readLine()) != null) {
 							if (password.equals(longestguess)) {
 								break;
 							}
 							estimate = estimate.add(BigInteger.ONE);
-							line = reader.nextLine();
 							line = line.toLowerCase();
 							
 							
@@ -97,16 +103,19 @@ public class DictionaryAttack extends AttackAPI{
 						//System.out.println("Word removed, new PW: " + password);
 						//System.out.println("Last try: " + lastTry);
 						if (password.length() == 0) {
-							System.out.println(estimate + ", " + total + ", " + words);
-							estimate = estimate.multiply(BigInteger.TWO.multiply(BigInteger.TWO.multiply((total.pow(words)))));
+							estimate = estimate.multiply(BigInteger.ONE.add(BigInteger.ONE).multiply(BigInteger.ONE.add(BigInteger.ONE).multiply((total.pow(words)))));
 							//estimate = estimate.multiply(separators);
 							this.attackSuccess = true;
 							this.result = line;
 							reader.close();
+							is.close();
+							ifs.close();
 							return estimate;
 							
 						} else if (lastTry == password) {
 							reader.close();
+							is.close();
+							ifs.close();
 							this.attackSuccess = false;
 							return BigInteger.ONE.negate();
 							
@@ -123,6 +132,9 @@ public class DictionaryAttack extends AttackAPI{
 					} catch (FileNotFoundException e) {
 						System.out.println("english.txt not found");
 						e.printStackTrace();
+						return BigInteger.ONE.negate();
+					} catch (Exception e) {
+						System.out.println(e.getMessage());
 						return BigInteger.ONE.negate();
 					}
 				

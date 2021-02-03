@@ -5,15 +5,20 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.math.BigInteger;
+import java.nio.file.Paths;
 import java.util.List;
 
 import gui.AppView.AttackType;
 import types.AppModel;
 import types.AttackAPI;
+import types.RainbowTableAttack;
 
 public class CommonPasswordsAttack extends AttackAPI {
-	private static final String allPasswords = "src/commonPasswords/passwordFiles";
+	private static final String allPasswords = "/commonPasswords/passwordFiles";
+	private final int numberOfPasswordFiles = 64;
 	private int currentLevenschteinDistance = Integer.MAX_VALUE;
 	private String levenGuess = "";
 	
@@ -25,50 +30,60 @@ public class CommonPasswordsAttack extends AttackAPI {
 	
 	@Override
 	protected BigInteger calculateMetric() {
-		File[] files = new File(allPasswords).listFiles();
-		BufferedReader br;
-		String toCompare = "";
-		BigInteger estimatedGuesses = BigInteger.ZERO;
-		for (int i = 0; i < files.length; i++) {
-			this.model.callUpdateConsole("Moved to new file: " + i);
-			try {
-				br = new BufferedReader(new FileReader(files[i]));
-			
-			} catch (FileNotFoundException e) {
-				System.err.println("File at index " + i + " wasn't found");
-				e.printStackTrace();
-				return BigInteger.ONE.negate();
-			}
-			try {
-				toCompare = br.readLine();
-				while (toCompare != null) {
-					estimatedGuesses = estimatedGuesses.add(BigInteger.ONE);
-					int levenDist = calculateLevenschtein(this.password, toCompare);
-					if (currentLevenschteinDistance > levenDist) {
-						this.currentLevenschteinDistance =  levenDist;
-						this.levenGuess = toCompare;
+		try {
+			BufferedReader br;
+			String toCompare = "";
+			BigInteger estimatedGuesses = BigInteger.ZERO;
+			for (int i = 0; i < numberOfPasswordFiles; i++) {
+				
+				this.model.callUpdateConsole("Moved to new file: " + i);
+				try {
+					String fileName = Integer.toString(i) + ".txt";
+					if (i < 10) {
+						fileName = "0" + fileName;
 					}
 					
-					if (toCompare.equals(this.password)) {
-						this.attackSuccess = true;
-						this.model.resultInfo.put("Common Passwords Attack", estimatedGuesses);
-						return estimatedGuesses;
-					}
+					InputStream is = (RainbowTableAttack.class.getResourceAsStream(allPasswords + "/" + fileName));
+					InputStreamReader ifs = new InputStreamReader(is);
+					br = new BufferedReader(ifs);
 					
 					toCompare = br.readLine();
-				}
-			} catch (IOException e) {
-				System.err.println("Could not read line");
-				e.printStackTrace();
-				return BigInteger.ONE.negate();
-			}
-		}
+					while (toCompare != null) {
+						estimatedGuesses = estimatedGuesses.add(BigInteger.ONE);
+						int levenDist = calculateLevenschtein(this.password, toCompare);
+						if (currentLevenschteinDistance > levenDist) {
+							this.currentLevenschteinDistance =  levenDist;
+							this.levenGuess = toCompare;
+						}
+						
+						if (toCompare.equals(this.password)) {
+							this.attackSuccess = true;
+							this.model.resultInfo.put("Common Passwords Attack", estimatedGuesses);
+							return estimatedGuesses;
+						}
+						
+						toCompare = br.readLine();
+					}
 
-		this.attackSuccess = false;
-		this.model.updateAdditionalComments(this.attackType, "Though the attack failed, the minimum Levenschtein distance out of all the passwords was " + this.currentLevenschteinDistance 
-				+ ".\nThe closest match to the existing passwords is: " + this.levenGuess);
-		this.model.resultInfo.put("Common Passwords Attack", BigInteger.ONE.negate());
-		return estimatedGuesses;
+					is.close();
+					ifs.close();
+					br.close();
+				
+				} catch (Exception e) {
+					e.printStackTrace();
+					return BigInteger.ONE.negate();
+				}
+			}
+	
+			this.attackSuccess = false;
+			this.model.updateAdditionalComments(this.attackType, "Though the attack failed, the minimum Levenschtein distance out of all the passwords was " + this.currentLevenschteinDistance 
+					+ ".\nThe closest match to the existing passwords is: " + this.levenGuess);
+			this.model.resultInfo.put("Common Passwords Attack", BigInteger.ONE.negate());
+			return estimatedGuesses;
+		}	catch (Exception e) {
+			System.out.println(e.getMessage());
+			return BigInteger.ONE.negate();
+		}
 	}
 
 	private int calculateLevenschtein(String s1, String s2) {
