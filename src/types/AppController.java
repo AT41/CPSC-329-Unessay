@@ -23,7 +23,6 @@ public class AppController {
 		@Override
 		public void actionPerformed(ActionEvent e) {
 			this.view.setButtonEnableOrDisable(false);
-			System.out.println(((JTextField)e.getSource()).getText());
 
 			model.resultInfo = new Hashtable<String, BigInteger>();
 			model.setPlainTextPassword(((JTextField)e.getSource()).getText());

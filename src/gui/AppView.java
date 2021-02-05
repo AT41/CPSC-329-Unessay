@@ -20,6 +20,7 @@ import java.awt.event.WindowEvent;
 import java.io.File;
 import java.io.IOException;
 import java.math.BigInteger;
+import java.nio.file.Paths;
 import java.util.Hashtable;
 
 import javax.swing.BorderFactory;
@@ -62,7 +63,7 @@ public class AppView extends Frame implements GUI {
 	@Override
 	public void addListenerForButton(ActionListener returnsPlaintextPassword) {
 		this.userPanelComponents.calculateButton.addActionListener(e -> {
-			if (this.userPanelComponents.passwordInput.getText().isBlank()) {
+			if (this.userPanelComponents.passwordInput.getText().equals("")) {
 				this.userPanelComponents.console.printToConsole("Please enter a non-empty password");
 			} else {
 				this.resetView();
@@ -112,9 +113,14 @@ public class AppView extends Frame implements GUI {
         });
 		
 		try {
-			this.customFont = Font.createFont(Font.TRUETYPE_FONT, new File("resources/CONSOLA.TTF")).deriveFont(12f);
+			// this.customFont = Font.createFont(Font.TRUETYPE_FONT, new File("resources/CONSOLA.TTF")).deriveFont(12f);
+			this.customFont = Font.createFont(Font.TRUETYPE_FONT, Paths.get(AppView.class.getResource("/CONSOLA.TTF").toURI()).toFile()).deriveFont(12f);
+			
+			// File file = Paths.get(AppView.class.getResource("/CONSOLA.TTF").toURI()).toFile();
+			
 		} catch (Exception e1) {
 			System.err.println("Could not load font");
+			System.out.println(e1.getMessage());
 		}
 		
 		javax.swing.SwingUtilities.invokeLater(() -> {initialize();});
@@ -201,7 +207,7 @@ public class AppView extends Frame implements GUI {
 			temp.setVisible(true);
 			temp.setMaximumSize(new Dimension(Integer.MAX_VALUE, 40));
 			
-			ImageIcon icon = new ImageIcon("resources/icon-smaller.png");
+			ImageIcon icon = new ImageIcon(AppView.class.getResource("/icon-smaller.png"));
 			infoButtons[i] = new JButton(icon);
 			temp.add(infoButtons[i]);
 
