@@ -19,6 +19,7 @@ import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 import java.math.BigInteger;
 import java.nio.file.Paths;
 import java.util.Hashtable;
@@ -113,11 +114,8 @@ public class AppView extends Frame implements GUI {
         });
 		
 		try {
-			// this.customFont = Font.createFont(Font.TRUETYPE_FONT, new File("resources/CONSOLA.TTF")).deriveFont(12f);
-			this.customFont = Font.createFont(Font.TRUETYPE_FONT, Paths.get(AppView.class.getResource("/CONSOLA.TTF").toURI()).toFile()).deriveFont(12f);
-			
-			// File file = Paths.get(AppView.class.getResource("/CONSOLA.TTF").toURI()).toFile();
-			
+			InputStream is = AppView.class.getResourceAsStream("/CONSOLA.TTF");
+			this.customFont = Font.createFont(Font.TRUETYPE_FONT, is).deriveFont(12f);
 		} catch (Exception e1) {
 			System.err.println("Could not load font");
 			System.out.println(e1.getMessage());
